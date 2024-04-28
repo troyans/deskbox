@@ -1,4 +1,0 @@
-{
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "eslint.runtime": "/Users/iskak/.nvm/versions/node/v20.11.1/bin/node",
-}
