@@ -5,6 +5,7 @@ import LandingContainer from "./landingContainer";
 import { useSession } from "next-auth/react";
 import Button from "../elements/button";
 import CustomLink from "../elements/customLink";
+import { signOut } from "next-auth/react";
 
 export default function LandingHeader() {
   const { data: session, status } = useSession();
@@ -113,7 +114,7 @@ export default function LandingHeader() {
                           <Button link="/dashboard" text="Go to Dashboard" />
                         </div>
                         <div className="mt-12 lg:mt-0 ml-2">
-                          <Button link="/api/auth/signout" text="Sign Out" />
+                          <Button onClickEvent={() => signOut()} text="Sign Out" />
                         </div>
                       </>
                     ) : (
