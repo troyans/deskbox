@@ -1,10 +1,29 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 
 export default function LandingCta() {
   const { data: session, status } = useSession();
   const userEmail = session?.user?.email;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const inputRef = useRef(null);
+
+  const subscribeUser = async (e) => {
+    e.preventDefault();
+
+    // this is where your mailchimp request is made
+
+    const res = await fetch("/api/user/subscribeUser", {
+      body: JSON.stringify({
+        email: inputRef.current.value,
+      }),
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      method: "POST",
+    });
+  };
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -86,24 +105,17 @@ export default function LandingCta() {
                       id="mc_embed_signup2"
                       className="bg-indigo-800 px-10 py-10 rounded-xl w-full text-white"
                     >
-                      <form
-                        action="https://gmail.us22.list-manage.com/subscribe/post?u=a0b77addb3286c949d100eca0&amp;id=0d148c6976&amp;f_id=001fc3e1f0"
-                        method="post"
-                        id="mc-embedded-subscribe-form"
-                        name="mc-embedded-subscribe-form"
-                        className="validate "
-                        target="_blank"
-                      >
+                      <form onSubmit={subscribeUser}>
                         <div className="mc-field-group flex flex-col md:flex-row gap-x-5 gap-y-5 w-full">
                           <div>
                             <input
                               placeholder="Email"
-                              type="email"
                               name="EMAIL"
                               className="required email bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-2xl w-full px-3 py-3"
                               id="mce-EMAIL"
                               required={true}
-                              value=""
+                              type="email"
+                              ref={inputRef}
                             />
                           </div>
                           <div>
