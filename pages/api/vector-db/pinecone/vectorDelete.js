@@ -1,4 +1,4 @@
-import { PineconeClient } from "@pinecone-database/pinecone";
+import { Pinecone, PineconeClient } from "@pinecone-database/pinecone";
 
 export default async (req, res) => {
   if (req.method !== "DELETE") {
@@ -10,24 +10,44 @@ export default async (req, res) => {
     return res.status(400).json({ message: "uploadId is required" });
   }
 
-  const client = new PineconeClient();
-  await client.init({
+  const client = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY,
-    environment: process.env.PINECONE_ENVIRONMENT,
   });
-
   const index = client.Index(process.env.VECTOR_DB_INDEX_NAME);
+  // const client = new PineconeClient();
+  // await client.init({
+  //   apiKey: process.env.PINECONE_API_KEY,
+  //   environment: process.env.PINECONE_ENVIRONMENT,
+  // });
+
+  // const index = client.Index(process.env.VECTOR_DB_INDEX_NAME);
 
   try {
+    // const pageOneList = await index.query({
+    //   filter: { uploadId: { $eq: uploadId } },
+    //   topK: 1,
+    //   includeMetadata: true,
+    // });
+    // console.log(pageOneList);
     // Delete the vector by metadata uploadId
-    const result = await index._delete({
-      deleteRequest: {
-        filter: {
-          uploadId: uploadId,
-        },
-        //namespace: your_name_space,
-      },
+    // const result = await index._delete({
+    //   deleteRequest: {
+    //     filter: {
+    //       uploadId: uploadId,
+    //     },
+    //     //namespace: your_name_space,
+    //   },
+    // });
+    // const pageOneList = await index.query({
+    //   filter: { uploadId: { $eq: uploadId } },
+    //   topK: 1,
+    //   includeMetadata: true,
+    // });
+    // console.log('ai',pageOneList)
+    const result = await index.deleteMany({
+      uploadId: { $eq: uploadId },
     });
+    console.log(result);
 
     return res.status(200).json({ message: "Vector deleted successfully" });
   } catch (error) {

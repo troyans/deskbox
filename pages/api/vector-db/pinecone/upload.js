@@ -6,10 +6,13 @@ import { CSVLoader } from "langchain/document_loaders/fs/csv";
 import { JSONLoader } from "langchain/document_loaders/fs/json";
 import fs from "fs";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { PineconeClient } from "@pinecone-database/pinecone";
-import { PineconeStore } from "langchain/vectorstores/pinecone";
-import { Document } from "langchain/document";
+// import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { Pinecone, PineconeClient } from "@pinecone-database/pinecone";
+// import { PineconeStore } from "langchain/vectorstores/pinecone";
+// import { Document } from "langchain/document";
+import { Document } from "@langchain/core/documents";
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { PineconeStore } from "@langchain/pinecone";
 
 const upload = multer({ dest: "uploads/" });
 const maxFiles = 10; // Maximum number of files
@@ -32,11 +35,13 @@ export default async (req, res) => {
       return res.status(400).json({ message: "No files uploaded" });
     }
 
-    const pineconeClient = new PineconeClient();
-    await pineconeClient.init({
-      environment: process.env.PINECONE_ENVIRONMENT,
+    const pineconeClient = new Pinecone({
       apiKey: process.env.PINECONE_API_KEY,
     });
+    // await pineconeClient.init({
+    //   environment: process.env.PINECONE_ENVIRONMENT,
+    //   apiKey: process.env.PINECONE_API_KEY,
+    // });
 
     const indexName = process.env.VECTOR_DB_INDEX_NAME;
 

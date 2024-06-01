@@ -3,11 +3,18 @@ import React, { useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import AuthLayout from "@/components/layout/AuthLayout";
+import { Label } from "@/components/ui/Label";
+import { Input } from "@/components/ui/Input";
+import Link from "next/link";
+import { Button } from "@/components/ui/Button";
+import Image from "next/image";
+import { useToast } from "@/components/ui/Toast/use-toast";
 
 const LoginPage = () => {
+  const { toast } = useToast();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [emailInPutError, setEmailInputError] = useState(false);
   const [passwordInPutError, setPasswordInputError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +27,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     let res = await signIn("credentials", {
       email,
       password,
@@ -31,10 +39,12 @@ const LoginPage = () => {
       router.push("/dashboard");
       return;
     } else {
-      // Toast failed
-      setError("Failed! Check you input and try again.");
-      // return;
-      console.log("Failed", res);
+      setIsLoading(false);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Failed! Check you input and try again.",
+      });
     }
     return res;
   };
@@ -56,69 +66,68 @@ const LoginPage = () => {
 
   return (
     <AuthLayout>
-      <div className="flex h-screen w-screen justify-center items-center overflow-hidden bg-slate-100">
-        <div className="flex justify-center items-center m-auto p-3">
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-          >
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="email"
-              >
-                Email
-              </label>
-              <input
-                className={`border-${
-                  emailInPutError ? "red-500" : ""
-                } shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                id="email"
-                type="text"
-                placeholder="Email"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
+      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+        <div className="flex items-center justify-center py-12">
+          <div className="mx-auto grid w-[350px] gap-6">
+            <div className="grid gap-2 text-center">
+              <h1 className="text-3xl font-bold">Login</h1>
+              <p className="text-balance text-muted-foreground">
+                Enter your email below to login to your account
+              </p>
             </div>
-            <div className="mb-6">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="password"
-              >
-                Password
-              </label>
-              <input
-                className={` border-${
-                  passwordInPutError ? "red-500" : ""
-                } shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
-                id="password"
-                type="password"
-                placeholder="******************"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-              {/* <p className="text-red-500 text-xs italic">
-            Please choose a password.
-          </p> */}
+            <form onSubmit={handleSubmit}>
+              <div className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">Password</Label>
+                    <Link
+                      href="/forgot-password"
+                      className="ml-auto inline-block text-sm underline"
+                    >
+                      Forgot your password?
+                    </Link>
+                  </div>
+                  <Input
+                    id="password"
+                    type="password"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  Login
+                </Button>
+                {/* <Button variant="outline" className="w-full">
+                  Login with Google
+                </Button> */}
+              </div>
+            </form>
+            <div className="mt-4 text-center text-sm">
+              Don&apos;t have an account?{" "}
+              <Link href="/register" className="underline">
+                Sign up
+              </Link>
             </div>
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500  hover:bg-blue-700 text-white font-bold py-2  px-4 rounded  focus:outline-none  focus:shadow-outline"
-                type="submit"
-                disabled={isLoading ? true : false}
-              >
-                {isLoading ? "Loading..." : "Sign In"}
-              </button>
-              <a
-                className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 hidden"
-                href="#"
-              >
-                Forgot Password?
-              </a>
-            </div>
-          </form>
+          </div>
+        </div>
+        <div className="hidden bg-muted lg:block">
+          <Image
+            src="/img/bg-auth.png"
+            alt="Image"
+            width="1920"
+            height="1080"
+            className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          />
         </div>
       </div>
     </AuthLayout>

@@ -9,6 +9,8 @@ import { Session } from "next-auth";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { useEffect } from "react";
 import { gtmPageView } from "@/lib/gtm";
+import { TooltipProvider } from "@/components/ui/Tooltip";
+import { Toaster } from "@/components/ui/Toast/toaster";
 
 export default function App({
   Component,
@@ -27,10 +29,13 @@ export default function App({
       <GoogleAnalytics />
       <SEO />
       <SessionProvider session={session}>
-        <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class" forcedTheme="light">
           <LandingLayout>
-            <Component {...pageProps} />
-            <GoogleTagManager gtmId={process.env.GTM_ID} />
+            <TooltipProvider>
+              <Component {...pageProps} />
+              <GoogleTagManager gtmId={process.env.GTM_ID} />
+              <Toaster />
+            </TooltipProvider>
           </LandingLayout>
         </ThemeProvider>
       </SessionProvider>
