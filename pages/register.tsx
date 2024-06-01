@@ -1,5 +1,10 @@
 // import AuthLayout from "@/components/layout/AuthLayout";
 import AuthLayout from "@/components/layout/AuthLayout";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
@@ -52,101 +57,82 @@ const Register = () => {
 
   return (
     <AuthLayout>
-      <div className="flex h-screen w-screen justify-center items-center overflow-hidden bg-slate-100">
-        <div className="flex justify-center items-center m-auto p-3">
-          <form
-            onSubmit={handleSubmit}
-            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-          >
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="name"
-              >
-                Name
-              </label>
-              <input
-                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                id="name"
-                type="text"
-                placeholder="name"
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
+      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+        <div className="flex items-center justify-center py-12">
+          <div className="mx-auto grid w-[350px] gap-6">
+            <div className="grid gap-2 text-center">
+              <h1 className="text-3xl font-bold">Sign Up</h1>
+              <p className="text-balance text-muted-foreground">
+                Enter your information to create an account
+              </p>
             </div>
-
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="email"
-              >
-                Email
-              </label>
-              <input
-                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                id="email"
-                type="email"
-                placeholder="Email"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-              />
+            <form onSubmit={handleSubmit}>
+              <div className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="name">Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="name"
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    type="password"
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="confirm-password">Confirm Password</Label>
+                  <Input
+                    id="confirm-password"
+                    type="password"
+                    required
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                  />
+                  {passError && (
+                    <p className="text-red-500 text-xs italic">
+                      Password do not match!
+                    </p>
+                  )}
+                </div>
+                <Button type="submit" className="w-full">
+                  Create an account
+                </Button>
+                {/* <Button variant="outline" className="w-full">
+                  Login with Google
+                </Button> */}
+              </div>
+            </form>
+            <div className="mt-4 text-center text-sm">
+              Already have an account?{" "}
+              <Link href="/login" className="underline">
+                Sign in
+              </Link>
             </div>
-            <div className="mb-6">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="password"
-              >
-                Password
-              </label>
-              <input
-                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
-                id="password"
-                type="password"
-                placeholder="***********"
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="confirm-password"
-              >
-                Confirm Password
-              </label>
-              <input
-                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline`}
-                id="confirm-password"
-                type="password"
-                placeholder="***********"
-                onChange={(e) => {
-                  setConfirmPassword(e.target.value);
-                }}
-              />
-              {passError && (
-                <p className="text-red-500 text-xs italic">
-                  Password do not match!
-                </p>
-              )}
-            </div>
-            <div className="flex items-center justify-between">
-              <button
-                className="bg-blue-500  hover:bg-blue-700 text-white font-bold py-2  px-4 rounded  focus:outline-none  focus:shadow-outline"
-                type="submit"
-              >
-                Sign Up
-              </button>
-              <a
-                className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                href="#"
-              >
-                Have an account? Sign in
-              </a>
-            </div>
-          </form>
+          </div>
+        </div>
+        <div className="hidden bg-muted lg:block">
+          <Image
+            src="/img/bg-auth.png"
+            alt="Image"
+            width="1920"
+            height="1080"
+            className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          />
         </div>
       </div>
     </AuthLayout>

@@ -1,8 +1,10 @@
-import { PineconeClient } from "@pinecone-database/pinecone";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { PineconeStore } from "langchain/vectorstores/pinecone";
+import { Pinecone } from "@pinecone-database/pinecone";
+// import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+// import { PineconeStore } from "langchain/vectorstores/pinecone";
 import { AIMessage, HumanMessage } from "langchain/schema";
 import makeChain from "@/lib/makeChain";
+import { OpenAIEmbeddings } from "@langchain/openai";
+import { PineconeStore } from "@langchain/pinecone";
 
 //const PINECONE_NAME_SPACE = "your_namespace"; // Replace with your namespace
 
@@ -16,11 +18,14 @@ export default async (req, res) => {
   const sanitizedQuestion = question.trim().replaceAll("\n", " ");
 
   try {
-    const pineconeClient = new PineconeClient();
-    await pineconeClient.init({
-      environment: process.env.PINECONE_ENVIRONMENT,
+    const pineconeClient = new Pinecone({
+      // environment: process.env.PINECONE_ENVIRONMENT,
       apiKey: process.env.PINECONE_API_KEY,
     });
+    // await pineconeClient({
+    //   environment: process.env.PINECONE_ENVIRONMENT,
+    //   apiKey: process.env.PINECONE_API_KEY,
+    // });
 
     const index = pineconeClient.Index(process.env.VECTOR_DB_INDEX_NAME);
 

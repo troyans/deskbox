@@ -6,7 +6,7 @@ const Chatbot = ({}) => {
   const chatHistoryRef = useRef(null);
 
   useEffect(() => {
-    const savedChatHistory = localStorage.getItem("nextjs-ai-boilerplate");
+    const savedChatHistory = localStorage.getItem("chatver");
     if (savedChatHistory) {
       setChatHistory(JSON.parse(savedChatHistory));
     }
@@ -50,7 +50,7 @@ const Chatbot = ({}) => {
         updatedChatHistory.push({ text: responseData.text, sender: "bot" });
         setChatHistory(updatedChatHistory);
         localStorage.setItem(
-          "nextjs-ai-boilerplate",
+          "chatver",
           JSON.stringify(updatedChatHistory)
         );
       } else {
