@@ -94,7 +94,7 @@ export default function ProjectFile() {
     });
 
     try {
-      const response = await fetch("/api/vector-db/pinecone/upload", {
+      const response = await fetch("/api/vector-db/pinecone/upload-data", {
         method: "POST",
         body: formData,
       });
@@ -226,7 +226,7 @@ export default function ProjectFile() {
                       >
                         <PlusCircle className="h-3.5 w-3.5" />
                         <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                          Add Product
+                          Add File
                         </span>
                       </Button>
                     </AlertDialogTrigger>
@@ -282,10 +282,10 @@ export default function ProjectFile() {
                     return (
                       <TableRow key={item.id}>
                         <TableCell className="font-medium">
-                          {item.fileName}
+                          {item.fileName.replace(/\.[^/.]+$/, "")}
                         </TableCell>
                         <TableCell className="font-medium">
-                          {item.fileName}
+                          {item.fileName.split(".").pop()}
                         </TableCell>
                         <TableCell className="hidden md:table-cell">
                           {formatDefaultDate(new Date(item.createdAt))}
