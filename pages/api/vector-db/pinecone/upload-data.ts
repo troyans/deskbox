@@ -17,6 +17,7 @@ import { getToken } from "next-auth/jwt";
 
 const maxFiles = 10; // Maximum number of files
 
+export const maxDuration = 60;
 export const config = {
   api: {
     bodyParser: false,
