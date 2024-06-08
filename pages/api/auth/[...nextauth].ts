@@ -44,10 +44,10 @@ export default NextAuth({
           },
         });
         const user = await res.json();
+        console.log("oi", user);
 
         if (res.ok && user) {
           userAccount = user;
-          console.log(userAccount);
           return user;
         } else {
           return null;
@@ -74,6 +74,7 @@ export default NextAuth({
   callbacks: {
     async session({ session, token }) {
       session.user.id = token.user.id;
+      session.user.projects = token.user.projects;
 
       return session;
     },
@@ -86,6 +87,7 @@ export default NextAuth({
         }
 
         token.user.id = user.id;
+        token.user.projects = user.projects;
       }
       return token;
     },

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 // import { validateEmail } from "../../lib/utils";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import AuthLayout from "@/components/layout/AuthLayout";
 import { Label } from "@/components/ui/Label";
@@ -34,9 +34,14 @@ const LoginPage = () => {
       callbackUrl: `${process.env.NEXTAUTH_URL}`,
       redirect: false,
     });
+    const session = await getSession();
 
     if (res?.ok) {
-      router.push("/dashboard");
+      if (session.user.projects.length !== 0) {
+        router.push(`/project/${session.user.projects[0].id}/dashboard`);
+      } else {
+        router.push("/project/create");
+      }
       return;
     } else {
       setIsLoading(false);

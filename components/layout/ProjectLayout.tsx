@@ -1,10 +1,13 @@
 import {
   Bell,
+  BotIcon,
   Cat,
   CircleUser,
   CornerDownLeft,
   File,
+  FolderLock,
   Home,
+  Inbox,
   LineChart,
   Link2,
   Menu,
@@ -42,13 +45,20 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/Tooltip";
 import { Textarea } from "../ui/Textarea";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "../ui/Collapsible";
 
 const ProjectLayout = ({ children }) => {
   const { query } = useRouter();
   const { status } = useSession();
   const router = useRouter();
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -61,7 +71,10 @@ const ProjectLayout = ({ children }) => {
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
+            <Link
+              href={`/project/${query.id}/dashboard`}
+              className="flex items-center gap-2 font-semibold"
+            >
               <Package2 className="h-6 w-6" />
               <span className="">Chatver</span>
             </Link>
@@ -73,40 +86,79 @@ const ProjectLayout = ({ children }) => {
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
-                href={`/project/${query.id}/dashboard`}
+                href={`/project/${query.id}/inbox`}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                  router.pathname === `/project/[id]/dashboard`
+                  router.pathname === `/project/[id]/inbox`
                     ? "text-primary bg-muted"
                     : "text-muted-foreground"
                 )}
               >
-                <LineChart className="h-4 w-4" />
-                Dashboard
+                <Inbox className="h-4 w-4" />
+                Inbox
               </Link>
+              <Collapsible
+                open={
+                  router.pathname === `/project/[id]/file` ||
+                  router.pathname === `/project/[id]/appearance` ||
+                  router.pathname === `/project/[id]/install` ||
+                  open
+                }
+              >
+                <CollapsibleTrigger
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary"
+                  onClick={() => setOpen(!open)}
+                >
+                  <BotIcon className="h-4 w-4" />
+                  Chatbot
+                </CollapsibleTrigger>
+                <CollapsibleContent className="ml-7">
+                  <Link
+                    href={`/project/${query.id}/file`}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                      router.pathname === `/project/[id]/file`
+                        ? "text-primary bg-muted"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    Knowledge Base
+                  </Link>
+                  <Link
+                    href={`/project/${query.id}/appearance`}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                      router.pathname === `/project/[id]/appearance`
+                        ? "text-primary bg-muted"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    Appearance
+                  </Link>
+                  <Link
+                    href={`/project/${query.id}/install`}
+                    className={cn(
+                      "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                      router.pathname === `/project/[id]/install`
+                        ? "text-primary bg-muted"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    Installation
+                  </Link>
+                </CollapsibleContent>
+              </Collapsible>
               <Link
-                href={`/project/${query.id}/file`}
+                href={`#`}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                  router.pathname === `/project/[id]/file`
+                  router.pathname === `/project/[id]/report`
                     ? "text-primary bg-muted"
                     : "text-muted-foreground"
                 )}
               >
-                <File className="h-4 w-4" />
-                Files
-              </Link>
-              <Link
-                href={`/project/${query.id}/appearance`}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                  router.pathname === `/project/[id]/appearance`
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                )}
-              >
-                <Cat className="h-4 w-4" />
-                Appearance
+                <FolderLock className="h-4 w-4" />
+                Report
               </Link>
               {/* <Link
                 href="#"
