@@ -74,19 +74,21 @@ model MyDocuments {
 }
 
 model Projects {
-  id          String    @id @default(cuid())
-  title       String    @db.VarChar(255)
-  tooltip     String?
-  welcome     String?
-  placeholder String?
-  setting     String?
-  userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  documents   Documents[]
-  links       Links[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
+  id            String    @id @default(cuid())
+  code          String?   @unique @db.VarChar(255)
+  title         String    @db.VarChar(255)
+  tooltip       String?
+  welcome       String?
+  placeholder   String?
+  setting       String?
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  documents     Documents[]
+  links         Links[]
+  conversations Conversations[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
 }
 
 model Documents {
@@ -104,4 +106,28 @@ model Links {
   projectId   String
   project     Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
+}
+
+model Conversations {
+  id          String    @id @default(cuid())
+  name        String?
+  email       String?
+  projectId   String
+  project     Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  messages    Messages[]
+  createdAt   DateTime  @default(now())
+}
+
+model Messages {
+  id                String    @id @default(cuid())
+  conversationId    String
+  conversation      Conversations  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  message           String
+  speaker           Speaker   @default(USER)
+  createdAt         DateTime  @default(now())
+}
+
+enum Speaker {
+  USER
+  AI
 }

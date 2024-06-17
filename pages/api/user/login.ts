@@ -27,9 +27,15 @@ async function loginUserHandler(req, res) {
         image: true,
       },
     });
-    console.log('tes',user);
+
+    const project = await prisma.projects.findMany({
+      where: { userId: user.id },
+    });
+
     if (user && user.password === hashPassword(password)) {
-      return res.status(200).json(exclude(user, ["password"]));
+      return res
+        .status(200)
+        .json({ ...exclude(user, ["password"]), projects: project });
     } else {
       return res.status(401).json({ message: "invalid credentials" });
     }

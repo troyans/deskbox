@@ -9,7 +9,7 @@ import { PineconeStore } from "@langchain/pinecone";
 //const PINECONE_NAME_SPACE = "your_namespace"; // Replace with your namespace
 
 export default async (req, res) => {
-  const { question, history, appId } = req.body;
+  const { question, history, appId, namespace } = req.body;
 
   if (!question) {
     return res.status(400).json({ message: "Question is required" });
@@ -35,6 +35,7 @@ export default async (req, res) => {
       {
         pineconeIndex: index,
         textKey: "text",
+        namespace,
         //namespace: your_name_space,
       }
     );

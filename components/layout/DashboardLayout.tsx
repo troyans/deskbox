@@ -1,34 +1,7 @@
-import {
-  Bell,
-  Cat,
-  CircleUser,
-  CornerDownLeft,
-  File,
-  Home,
-  LineChart,
-  Link2,
-  Menu,
-  MessageCircle,
-  Mic,
-  Package,
-  Package2,
-  Paperclip,
-  Search,
-  ShoppingCart,
-  Users,
-} from "lucide-react";
+import { CircleUser, Menu, Package2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/Button";
-import { Badge } from "../ui/Badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/Card";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/Sheet";
-import { Input } from "../ui/Input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,9 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../ui/DropdownMenu";
-import { Label } from "../ui/Label";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/Tooltip";
-import { Textarea } from "../ui/Textarea";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
