@@ -58,6 +58,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const file = data.files[`file${i}`][0];
         const uploadId = data.fields[`uploadId${i}`][0];
         const filename = data.fields[`filename${i}`][0];
+        const namespace = data.fields[`namespace${i}`][0];
 
         const folder = `document/${token.user.id}/`;
         const storageRef = ref(storage, `${folder}${filename}`);
@@ -109,6 +110,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         await PineconeStore.fromDocuments(documents, embeddings, {
           pineconeIndex: index,
           textKey: "text",
+          namespace,
         });
 
         fs.unlink(file.filepath, (err) => {

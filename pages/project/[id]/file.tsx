@@ -86,9 +86,14 @@ export default function ProjectFile() {
       const appContentEntry = {
         uploadId,
         fileName: file.name,
+        namespace: router.query.id,
         createdAt: new Date(),
       };
 
+      formData.append(
+        `namespace${index}`,
+        Array.isArray(router.query.id) ? router.query.id[0] : router.query.id
+      );
       formData.append(`uploadId${index}`, appContentEntry.uploadId);
       formData.append(`filename${index}`, appContentEntry.fileName);
     });

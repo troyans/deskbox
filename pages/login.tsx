@@ -38,7 +38,7 @@ const LoginPage = () => {
 
     if (res?.ok) {
       if (session.user.projects.length !== 0) {
-        router.push(`/project/${session.user.projects[0].id}/dashboard`);
+        router.push(`/project/${session.user.projects[0].id}/inbox`);
       } else {
         router.push("/project/create");
       }
