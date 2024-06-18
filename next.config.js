@@ -26,14 +26,6 @@ const nextConfig = {
       },
     ];
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "https://api.chatver-dev.vercel.app/:path*",
-      },
-    ];
-  },
   reactStrictMode: true,
   env: {
     MAILGUN_API_KEY: process.env.MAILGUN_API_KEY,
