@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
-const Register = () => {
+const Register = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -109,7 +109,7 @@ const Register = () => {
                     </p>
                   )}
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full text-white">
                   Create an account
                 </Button>
                 {/* <Button variant="outline" className="w-full">
@@ -119,7 +119,7 @@ const Register = () => {
             </form>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
-              <Link href="/login" className="underline">
+              <Link href="/login" className="underline text-primary">
                 Sign in
               </Link>
             </div>

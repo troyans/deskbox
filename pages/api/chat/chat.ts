@@ -42,6 +42,7 @@ export default async (req, res) => {
 
     // create chain
     const chain = makeChain(vectorStore);
+    history.splice(0, 1);
 
     const pastMessages = history.map((message, i) => {
       if (i % 2 === 0) {

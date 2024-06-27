@@ -83,18 +83,23 @@ const DashboardLayout = ({ children }) => {
         <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="ml-auto">
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
+              <Button variant="default" size="icon" className="rounded-full">
+                <CircleUser className="h-5 w-5 text-white" />
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="bg-white">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-primary hover:text-white focus:bg-primary focus:text-white">
+                Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem className="hover:bg-primary hover:text-white focus:bg-primary focus:text-white">
+                Support
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
+                className="hover:bg-primary hover:text-white focus:bg-primary focus:text-white"
                 onClick={async () => {
                   await signOut();
                   router.push("/");

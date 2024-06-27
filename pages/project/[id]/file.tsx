@@ -41,7 +41,7 @@ import { formatDefaultDate } from "@/lib/utils";
 import ProjectLayout from "@/components/layout/ProjectLayout";
 import { useToast } from "@/components/ui/Toast/use-toast";
 
-export default function ProjectFile() {
+export default function ProjectFile(props) {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -113,7 +113,6 @@ export default function ProjectFile() {
         });
       });
 
-      fetchContentEntries();
       fileInputRef.current.value = "";
       setOpenDialog(false);
       setIsUploadLoading(false);
@@ -122,6 +121,9 @@ export default function ProjectFile() {
         title: "Yeay! Update success.",
         description: "Success! Update project successfully.",
       });
+      setTimeout(() => {
+        fetchContentEntries();
+      }, 200);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -226,10 +228,10 @@ export default function ProjectFile() {
                     <AlertDialogTrigger asChild>
                       <Button
                         size="sm"
-                        className="h-8 gap-1"
+                        className="h-8 gap-1 text-white"
                         onClick={() => setOpenDialog(true)}
                       >
-                        <PlusCircle className="h-3.5 w-3.5" />
+                        <PlusCircle className="h-3.5 w-3.5 text-white" />
                         <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                           Add File
                         </span>
@@ -253,12 +255,16 @@ export default function ProjectFile() {
                         </div>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
-                        <AlertDialogCancel onClick={() => setOpenDialog(false)}>
+                        <AlertDialogCancel
+                          onClick={() => setOpenDialog(false)}
+                          className="hover:bg-gray-100"
+                        >
                           Cancel
                         </AlertDialogCancel>
                         <AlertDialogAction
                           onClick={() => handleFileChange()}
                           disabled={isUploadLoading}
+                          className="text-white"
                         >
                           Continue
                         </AlertDialogAction>
@@ -302,6 +308,7 @@ export default function ProjectFile() {
                                 aria-haspopup="true"
                                 size="icon"
                                 variant="ghost"
+                                className="hover:bg-primary hover:text-white focus:bg-primary focus:text-white"
                               >
                                 <MoreHorizontal className="h-4 w-4" />
                                 <span className="sr-only">Toggle menu</span>
@@ -313,6 +320,7 @@ export default function ProjectFile() {
                             >
                               <DropdownMenuLabel>Actions</DropdownMenuLabel>
                               <DropdownMenuItem
+                                className="hover:bg-primary hover:text-white focus:bg-primary focus:text-white"
                                 onClick={() =>
                                   handleDelete(item.id, item.uploadId)
                                 }

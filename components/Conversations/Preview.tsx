@@ -4,7 +4,7 @@ import { Label } from "../ui/Label";
 import { Textarea } from "../ui/Textarea";
 import { Button } from "../ui/Button";
 
-import { CornerDownLeft } from "lucide-react";
+import { BotIcon, X } from "lucide-react";
 import { useRouter } from "next/router";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 
@@ -14,6 +14,7 @@ export default function ConversationPreview({ project }: any) {
 
   const [query, setQuery] = React.useState("");
   const [chatHistory, setChatHistory] = React.useState([]);
+  const [showTooltip, setShowTooltip] = React.useState(true);
 
   React.useEffect(() => {
     const savedChatId = localStorage.getItem("chatver");
@@ -158,13 +159,38 @@ export default function ConversationPreview({ project }: any) {
           <div className="absolute bottom-0 right-0 mb-4 mr-4">
             <button
               id="open-chat"
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300 flex items-center"
+              className="bg-blue-500 text-white p-3 hover:bg-blue-600 transition duration-300 flex items-center rounded-full"
               style={{ background: project.setting.color }}
+              onClick={() => setShowTooltip(!showTooltip)}
             >
-              {project.tooltip}
+              {showTooltip ? (
+                <>
+                  {project.setting.icon ? (
+                    <img
+                      src={
+                        typeof project.setting.icon === "string"
+                          ? project.setting.icon
+                          : URL.createObjectURL(project.setting.icon)
+                      }
+                      className="h-8 w-8 object-cover rounded-full"
+                    />
+                  ) : (
+                    <BotIcon className="h-8 w-8 object-cover rounded-full" />
+                  )}
+                </>
+              ) : (
+                <X className="h-8 w-8 object-cover rounded-full" />
+              )}
             </button>
           </div>
-          <div id="chat-container" className="absolute bottom-16 right-4 w-96">
+          <div
+            id="chat-container"
+            className={
+              showTooltip
+                ? "absolute bottom-24 right-4 w-96 hidden"
+                : "absolute bottom-24 right-4 w-96"
+            }
+          >
             <div className="bg-white shadow-md rounded-lg max-w-lg w-full">
               <div
                 className="p-4 border-b bg-blue-500 text-white rounded-t-lg flex justify-between items-center"
@@ -173,7 +199,8 @@ export default function ConversationPreview({ project }: any) {
                 <p className="text-lg font-semibold">{project.title}</p>
                 <button
                   id="close-chat"
-                  className="text-gray-300 hover:text-gray-400 focus:outline-none focus:text-gray-400"
+                  className="text-gray-300 hover:text-gray-400 focus:outline-none focus:text-gray-400 hidden"
+                  onClick={() => setShowTooltip(true)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -230,6 +257,23 @@ export default function ConversationPreview({ project }: any) {
                   Send
                 </button>
               </div>
+            </div>
+          </div>
+          <div
+            id="tooltip-container"
+            className={
+              showTooltip
+                ? "absolute bottom-20 right-4"
+                : "absolute bottom-20 right-4 hidden"
+            }
+          >
+            <div
+              className="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-s-xl rounded-se-xl"
+              style={{ background: project.setting.color }}
+            >
+              <p className="text-sm font-normal text-white">
+                {project.tooltip || "Tooltip"}
+              </p>
             </div>
           </div>
         </div>

@@ -1,26 +1,26 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Bird, CornerDownLeft, Rabbit, Turtle } from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
 import { Label } from "@/components/ui/Label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/Textarea";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useRouter } from "next/router";
 import { useToast } from "@/components/ui/Toast/use-toast";
 import { Separator } from "@/components/ui/Separator";
 import ConversationPreview from "@/components/Conversations/Preview";
+import { v4 as uuidv4 } from "uuid";
+import { useSession } from "next-auth/react";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "@/lib/firebase";
 
-export default function ProjectCreate() {
+export default function ProjectCreate(props) {
   const router = useRouter();
   const { toast } = useToast();
+  const { data: session } = useSession();
+
+  const fileInputRef = useRef(null);
+  const fileInputRef2 = useRef(null);
+
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
   // Form
   const [title, setTitle] = useState("");
@@ -29,15 +29,92 @@ export default function ProjectCreate() {
   const [placeholder, setPlaceholder] = useState("");
   const [logo, setLogo] = useState("");
   const [color, setColor] = useState("");
+  const [icon, setIcon] = useState("");
+  const [files, setFiles] = useState([]);
+
+  const handleFileChange = async (data: any) => {
+    const uploadId = uuidv4();
+    const formData = new FormData();
+
+    files.forEach((file: File, index: number) => {
+      formData.append(`file${index}`, file);
+
+      const appContentEntry = {
+        uploadId,
+        fileName: file.name,
+        namespace: router.query.id,
+        createdAt: new Date(),
+      };
+
+      formData.append(
+        `namespace${index}`,
+        Array.isArray(router.query.id) ? router.query.id[0] : router.query.id
+      );
+      formData.append(`uploadId${index}`, appContentEntry.uploadId);
+      formData.append(`filename${index}`, appContentEntry.fileName);
+    });
+
+    try {
+      const response = await fetch("/api/vector-db/pinecone/upload-data", {
+        method: "POST",
+        body: formData,
+      });
+
+      await response.json();
+
+      await files.forEach(async (file: File) => {
+        await createContentEntry({
+          uploadId,
+          fileName: file.name,
+        });
+      });
+
+      fileInputRef.current.value = "";
+      router.push(`/project/${data.id}/inbox`);
+      setIsDataLoading(false);
+      toast({
+        variant: "success",
+        title: "Yeay! Update success.",
+        description: "Success! Update project successfully.",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Failed! Check you input and try again.",
+      });
+      console.error("Error uploading files:", error);
+    }
+  };
+
+  async function createContentEntry(data) {
+    const response = await fetch(
+      `/api/projects/${router.query.id}/files/create`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    if (response.ok) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const handleSubmit = async (e) => {
+    setIsDataLoading(true);
     e.preventDefault();
     let data = {
       title,
       tooltip,
       welcome,
       placeholder,
-      setting: JSON.stringify({ color }),
+      setting: JSON.stringify({ color, icon }),
     };
 
     // Make call to backend to create user
@@ -52,12 +129,46 @@ export default function ProjectCreate() {
 
     if (res.ok) {
       const data = await res.json();
-      router.push(`/project/${data.id}/inbox`);
+      handleFileChange(data);
+      // router.push(`/project/${data.id}/inbox`);
     } else {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
         description: "Failed! Check you input and try again.",
+      });
+    }
+  };
+
+  const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setIsDataLoading(true);
+      const file = event.target.files[0];
+      const storageRef = ref(
+        storage,
+        `/icon/${session.user.id}.${file.name.split(".").pop()}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (err) =>
+          toast({
+            variant: "destructive",
+            title: err.message,
+          }),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            setIcon(url);
+            setIsDataLoading(false);
+            fileInputRef2.current.value = "";
+          });
+        }
+      );
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Please upload an image first!",
       });
     }
   };
@@ -121,7 +232,34 @@ export default function ProjectCreate() {
                   onChange={(e) => setColor(e.target.value)}
                 />
               </div>
-              <Button type="submit" size="sm" className="ml-auto gap-1.5">
+              <div className="grid gap-3">
+                <Label htmlFor="color">Icon</Label>
+                <Input
+                  type="file"
+                  accept=".svg, .png, .jpg, .webp"
+                  name="file"
+                  ref={fileInputRef2}
+                  onChange={async (e: React.ChangeEvent<HTMLInputElement>) =>
+                    uploadFile(e)
+                  }
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="color">Upload File</Label>
+                <Input
+                  type="file"
+                  accept=".pdf, .txt, .docx, .csv, .json"
+                  name="file"
+                  ref={fileInputRef}
+                  onChange={(e) => setFiles(Array.from(e.target.files))}
+                />
+              </div>
+              <Button
+                type="submit"
+                size="sm"
+                className="ml-auto gap-1.5 text-white"
+                disabled={isDataLoading}
+              >
                 Create Project
               </Button>
             </form>
@@ -132,7 +270,7 @@ export default function ProjectCreate() {
               tooltip,
               welcome,
               placeholder,
-              setting: { logo, color },
+              setting: { logo, color, icon },
             }}
           />
         </main>
