@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Bird, Rabbit, Turtle } from "lucide-react";
 import { Label } from "@/components/ui/Label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Select";
 import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/Textarea";
 import { useRouter } from "next/router";
 import ProjectLayout from "@/components/layout/ProjectLayout";
 import { useToast } from "@/components/ui/Toast/use-toast";
 import ConversationPreview from "@/components/Conversations/Preview";
 import { Separator } from "@/components/ui/Separator";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "@/lib/firebase";
+import { useSession } from "next-auth/react";
 
-export default function ProjectAppearance() {
+export default function ProjectAppearance(props) {
   const router = useRouter();
   const { toast } = useToast();
+  const { data: session } = useSession();
+
+  const fileInputRef = useRef(null);
 
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [appContent, setAppContent] = useState({});
@@ -31,6 +28,7 @@ export default function ProjectAppearance() {
   const [placeholder, setPlaceholder] = useState("");
   const [logo, setLogo] = useState("");
   const [color, setColor] = useState("");
+  const [icon, setIcon] = useState("");
 
   const fetchContentEntries = async () => {
     setIsDataLoading(true);
@@ -47,14 +45,13 @@ export default function ProjectAppearance() {
     setTooltip(appContent.tooltip);
     setWelcome(appContent.welcome);
     setPlaceholder(appContent.placeholder);
-    setColor(JSON.parse(appContent.setting).color);
+    setColor(JSON.parse(appContent.setting)?.color || "#5423E7");
+    setIcon(JSON.parse(appContent.setting)?.icon || "");
     setIsDataLoading(false);
   };
 
   useEffect(() => {
     if (router.query.id) {
-      setIsDataLoading(true);
-
       fetchContentEntries();
     }
   }, [router.query.id]);
@@ -66,7 +63,7 @@ export default function ProjectAppearance() {
       tooltip,
       welcome,
       placeholder,
-      setting: JSON.stringify({ color }),
+      setting: JSON.stringify({ color, icon }),
     };
 
     // Make call to backend to create user
@@ -92,6 +89,39 @@ export default function ProjectAppearance() {
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
         description: "Failed! Check you input and try again.",
+      });
+    }
+  };
+
+  const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setIsDataLoading(true);
+      const file = event.target.files[0];
+      const storageRef = ref(
+        storage,
+        `/icon/${session.user.id}.${file.name.split(".").pop()}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (err) =>
+          toast({
+            variant: "destructive",
+            title: err.message,
+          }),
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+            setIcon(url);
+            setIsDataLoading(false);
+            fileInputRef.current.value = "";
+          });
+        }
+      );
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Please upload an image first!",
       });
     }
   };
@@ -163,7 +193,24 @@ export default function ProjectAppearance() {
                   onChange={(e) => setColor(e.target.value)}
                 />
               </div>
-              <Button type="submit" size="sm" className="ml-auto gap-1.5">
+              <div className="grid gap-3">
+                <Label htmlFor="color">Icon</Label>
+                <Input
+                  type="file"
+                  accept=".svg, .png, .jpg, .webp"
+                  name="file"
+                  ref={fileInputRef}
+                  onChange={async (e: React.ChangeEvent<HTMLInputElement>) =>
+                    uploadFile(e)
+                  }
+                />
+              </div>
+              <Button
+                type="submit"
+                size="sm"
+                className="ml-auto gap-1.5 text-white"
+                disabled={isDataLoading}
+              >
                 Save Project
               </Button>
             </form>
@@ -174,7 +221,7 @@ export default function ProjectAppearance() {
               tooltip,
               welcome,
               placeholder,
-              setting: { logo, color },
+              setting: { logo, color, icon },
             }}
           />
         </main>

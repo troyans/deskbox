@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import Image from "next/image";
 import { useToast } from "@/components/ui/Toast/use-toast";
 
-const LoginPage = () => {
+const LoginPage = (props) => {
   const { toast } = useToast();
 
   const [email, setEmail] = useState("");
@@ -109,7 +109,11 @@ const LoginPage = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button
+                  type="submit"
+                  className="w-full text-white"
+                  disabled={isLoading}
+                >
                   Login
                 </Button>
                 {/* <Button variant="outline" className="w-full">
@@ -119,7 +123,7 @@ const LoginPage = () => {
             </form>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="underline">
+              <Link href="/register" className="underline text-primary">
                 Sign up
               </Link>
             </div>
