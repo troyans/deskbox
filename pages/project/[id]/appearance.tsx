@@ -10,6 +10,7 @@ import { Separator } from "@/components/ui/Separator";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { useSession } from "next-auth/react";
+import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
 
 export default function ProjectAppearance(props) {
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function ProjectAppearance(props) {
   const [placeholder, setPlaceholder] = useState("");
   const [logo, setLogo] = useState("");
   const [color, setColor] = useState("");
+  const [txtColor, setTxtColor] = useState("");
   const [icon, setIcon] = useState("");
 
   const fetchContentEntries = async () => {
@@ -46,6 +48,7 @@ export default function ProjectAppearance(props) {
     setWelcome(appContent.welcome);
     setPlaceholder(appContent.placeholder);
     setColor(JSON.parse(appContent.setting)?.color || "#5423E7");
+    setTxtColor(JSON.parse(appContent.setting)?.txtColor || "#FFF");
     setIcon(JSON.parse(appContent.setting)?.icon || "");
     setIsDataLoading(false);
   };
@@ -63,7 +66,7 @@ export default function ProjectAppearance(props) {
       tooltip,
       welcome,
       placeholder,
-      setting: JSON.stringify({ color, icon }),
+      setting: JSON.stringify({ color, txtColor, icon }),
     };
 
     // Make call to backend to create user
@@ -185,12 +188,20 @@ export default function ProjectAppearance(props) {
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="color">Brand color</Label>
-                <Input
-                  id="color"
-                  type="color"
-                  value={color}
-                  placeholder="Brand Color"
-                  onChange={(e) => setColor(e.target.value)}
+                <HexAlphaColorPicker color={color} onChange={setColor} />
+                <HexColorInput
+                  color={color}
+                  onChange={setColor}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="color">Text color</Label>
+                <HexAlphaColorPicker color={txtColor} onChange={setTxtColor} />
+                <HexColorInput
+                  color={txtColor}
+                  onChange={setTxtColor}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
               <div className="grid gap-3">
@@ -221,7 +232,7 @@ export default function ProjectAppearance(props) {
               tooltip,
               welcome,
               placeholder,
-              setting: { logo, color, icon },
+              setting: { logo, color, txtColor, icon },
             }}
           />
         </main>

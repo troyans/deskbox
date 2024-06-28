@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Search } from "lucide-react";
+import { Search, Settings } from "lucide-react";
 
 import { Input } from "@/components/ui/Input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
@@ -9,12 +9,13 @@ import ConversationDetail from "@/components/Conversations/Detail";
 import { Separator } from "@/components/ui/Separator";
 import { useRouter } from "next/router";
 
-export default function ProjectInbox() {
+export default function ProjectInbox(props) {
   const router = useRouter();
 
   const [id, setId] = React.useState("");
   const [isDataLoading, setIsDataLoading] = React.useState(true);
   const [appContent, setAppContent] = React.useState([]);
+  const [appearance, setAppearance] = React.useState({});
 
   const fetchContentEntries = async () => {
     setIsDataLoading(true);
@@ -33,15 +34,34 @@ export default function ProjectInbox() {
     setIsDataLoading(false);
   };
 
+  const fetchContentAppereance = async () => {
+    setIsDataLoading(true);
+    const response = await fetch(`/api/projects/${router.query.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const appContent = await response.json();
+    const tmpData = {
+      ...appContent,
+      setting: JSON.parse(appContent.setting),
+    };
+
+    setAppearance(tmpData);
+    setIsDataLoading(false);
+  };
+
   React.useEffect(() => {
     if (router.query.id) {
       fetchContentEntries();
+      fetchContentAppereance();
     }
   }, [router.query.id]);
 
   return (
     <ProjectLayout>
-      <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
+      <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3 flex-auto">
         <Tabs defaultValue="all" className="border rounded-xl">
           <div className="flex items-center px-4 py-2">
             <h1 className="text-xl font-bold">Inbox</h1>
@@ -76,7 +96,7 @@ export default function ProjectInbox() {
             <MailList items={appContent} onClick={(value) => setId(value)} />
           </TabsContent>
         </Tabs>
-        <ConversationDetail id={id} />
+        <ConversationDetail id={id} appearance={appearance} />
       </main>
     </ProjectLayout>
   );

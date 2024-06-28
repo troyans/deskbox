@@ -1,9 +1,5 @@
 import React from "react";
 
-import { Label } from "../ui/Label";
-import { Textarea } from "../ui/Textarea";
-import { Button } from "../ui/Button";
-
 import { BotIcon, X } from "lucide-react";
 import { useRouter } from "next/router";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
@@ -130,7 +126,9 @@ export default function ConversationPreview({ project }: any) {
         body: JSON.stringify({
           question: query,
           namespace: router.query.id,
-          history: chatHistory.map((message) => message.message),
+          history: chatHistory.map((message) => {
+            return { speaker: message.speaker, text: message.message };
+          }),
         }),
       });
 
@@ -160,7 +158,10 @@ export default function ConversationPreview({ project }: any) {
             <button
               id="open-chat"
               className="bg-blue-500 text-white p-3 hover:bg-blue-600 transition duration-300 flex items-center rounded-full"
-              style={{ background: project.setting.color }}
+              style={{
+                background: project.setting.color,
+                color: project.setting.txtColor,
+              }}
               onClick={() => setShowTooltip(!showTooltip)}
             >
               {showTooltip ? (
@@ -194,7 +195,10 @@ export default function ConversationPreview({ project }: any) {
             <div className="bg-white shadow-md rounded-lg max-w-lg w-full">
               <div
                 className="p-4 border-b bg-blue-500 text-white rounded-t-lg flex justify-between items-center"
-                style={{ background: project.setting.color }}
+                style={{
+                  background: project.setting.color,
+                  color: project.setting.txtColor,
+                }}
               >
                 <p className="text-lg font-semibold">{project.title}</p>
                 <button
@@ -222,7 +226,10 @@ export default function ConversationPreview({ project }: any) {
                 <div className="mb-2 text-right">
                   <p
                     className="bg-blue-500 text-white rounded-lg py-2 px-4 inline-block"
-                    style={{ background: project.setting.color }}
+                    style={{
+                      background: project.setting.color,
+                      color: project.setting.txtColor,
+                    }}
                   >
                     hello
                   </p>
@@ -232,7 +239,10 @@ export default function ConversationPreview({ project }: any) {
                     <AvatarImage />
                     <AvatarFallback
                       className="text-white bg-blue-500"
-                      style={{ background: project.setting.color }}
+                      style={{
+                        background: project.setting.color,
+                        color: project.setting.txtColor,
+                      }}
                     >
                       {project.title.substring(0, 1)}
                     </AvatarFallback>
@@ -252,7 +262,10 @@ export default function ConversationPreview({ project }: any) {
                 <button
                   id="send-button"
                   className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300"
-                  style={{ background: project.setting.color }}
+                  style={{
+                    background: project.setting.color,
+                    color: project.setting.txtColor,
+                  }}
                 >
                   Send
                 </button>
@@ -268,10 +281,13 @@ export default function ConversationPreview({ project }: any) {
             }
           >
             <div
-              className="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-s-xl rounded-se-xl"
-              style={{ background: project.setting.color }}
+              className="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-blue-500 rounded-s-xl rounded-se-xl text-white"
+              style={{
+                background: project.setting.color,
+                color: project.setting.txtColor,
+              }}
             >
-              <p className="text-sm font-normal text-white">
+              <p className="text-sm font-normal">
                 {project.tooltip || "Tooltip"}
               </p>
             </div>

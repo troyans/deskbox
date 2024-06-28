@@ -11,7 +11,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { useRouter } from "next/router";
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState("feed");
@@ -46,7 +46,7 @@ export default function Dashboard() {
           <h1 className="text-3xl font-semibold">Projects</h1>
           <Button
             size="sm"
-            className="h-8 gap-1 ml-auto"
+            className="h-8 gap-1 ml-auto text-white"
             onClick={() => router.push("/project/create")}
           >
             <PlusCircle className="h-3.5 w-3.5" />

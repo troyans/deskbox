@@ -42,20 +42,23 @@ export default async (req, res) => {
 
     // create chain
     const chain = makeChain(vectorStore);
-    history.splice(0, 1);
 
     const pastMessages = history.map((message, i) => {
-      if (i % 2 === 0) {
-        return new HumanMessage(message);
-      } else {
-        return new AIMessage(message);
+      if (!(i === 0 && message.speaker === "AI")) {
+        if (message.speaker === "USER") {
+          return new HumanMessage(message.text);
+        } else {
+          return new AIMessage(message.text);
+        }
       }
     });
 
     // Ask a question using chat history
     const response = await chain.call({
       question: sanitizedQuestion,
-      chat_history: pastMessages,
+      chat_history: pastMessages.filter(function (element) {
+        return element !== undefined;
+      }),
     });
 
     res.status(200).json(response);

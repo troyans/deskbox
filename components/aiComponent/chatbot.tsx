@@ -49,10 +49,7 @@ const Chatbot = ({}) => {
         const updatedChatHistory = newChatHistory.slice(0, -1); // Remove the last "loading" message
         updatedChatHistory.push({ text: responseData.text, sender: "bot" });
         setChatHistory(updatedChatHistory);
-        localStorage.setItem(
-          "chatver",
-          JSON.stringify(updatedChatHistory)
-        );
+        localStorage.setItem("chatver", JSON.stringify(updatedChatHistory));
       } else {
         console.error("Error:", responseData);
       }
@@ -105,8 +102,8 @@ const Chatbot = ({}) => {
             <div className="mt-0 ml-2 lg:mt-0">
               <div
                 onClick={() => chatNow(query)}
-                className={`relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0 
-          before:rounded-full before:bg-blue-600 before:transition before:duration-300 hover:before:scale-105 
+                className={`relative flex h-9 w-full items-center justify-center px-4 before:absolute before:inset-0
+          before:rounded-full before:bg-blue-600 before:transition before:duration-300 hover:before:scale-105
           active:duration-75 active:before:scale-95 sm:w-max cursor-pointer`}
               >
                 <span className="relative text-sm font-semibold text-white">
