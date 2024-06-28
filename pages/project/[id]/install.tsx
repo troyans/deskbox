@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import PublicLayout from "@/components/layout/PublicLayout";
 import ProjectLayout from "@/components/layout/ProjectLayout";
 
-export default function ProjectInstall() {
+export default function ProjectInstall(props) {
   const router = useRouter();
   return (
     <ProjectLayout>
@@ -21,7 +21,7 @@ export default function ProjectInstall() {
             w['Chatver-Widget']=o;w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments) };
             js = d.createElement(s), fjs = d.getElementsByTagName(s)[0];
             js.id = o; js.src = f; js.async = 1; fjs.parentNode.insertBefore(js, fjs);
-        }(window, document, 'script', 'mw', './widget.js'));
+        }(window, document, 'script', 'mw', '${process.env.NEXTAUTH_URL}/js/widget.js'));
         mw('init', { projectId: ${router.query.id} });
     </script>`}
         </code>

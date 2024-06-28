@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useSession } from "next-auth/react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/lib/firebase";
+import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
 
 export default function ProjectCreate(props) {
   const router = useRouter();
@@ -20,7 +21,7 @@ export default function ProjectCreate(props) {
   const fileInputRef = useRef(null);
   const fileInputRef2 = useRef(null);
 
-  const [isDataLoading, setIsDataLoading] = useState(true);
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   // Form
   const [title, setTitle] = useState("");
@@ -28,7 +29,8 @@ export default function ProjectCreate(props) {
   const [welcome, setWelcome] = useState("");
   const [placeholder, setPlaceholder] = useState("");
   const [logo, setLogo] = useState("");
-  const [color, setColor] = useState("");
+  const [color, setColor] = useState("#5423E7");
+  const [txtColor, setTxtColor] = useState("#FFF");
   const [icon, setIcon] = useState("");
   const [files, setFiles] = useState([]);
 
@@ -114,7 +116,7 @@ export default function ProjectCreate(props) {
       tooltip,
       welcome,
       placeholder,
-      setting: JSON.stringify({ color, icon }),
+      setting: JSON.stringify({ color, txtColor, icon }),
     };
 
     // Make call to backend to create user
@@ -225,11 +227,20 @@ export default function ProjectCreate(props) {
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="color">Brand color</Label>
-                <Input
-                  id="color"
-                  type="color"
-                  placeholder="Brand Color"
-                  onChange={(e) => setColor(e.target.value)}
+                <HexAlphaColorPicker color={color} onChange={setColor} />
+                <HexColorInput
+                  color={color}
+                  onChange={setColor}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="color">Text color</Label>
+                <HexAlphaColorPicker color={txtColor} onChange={setTxtColor} />
+                <HexColorInput
+                  color={txtColor}
+                  onChange={setTxtColor}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
               <div className="grid gap-3">
@@ -270,7 +281,7 @@ export default function ProjectCreate(props) {
               tooltip,
               welcome,
               placeholder,
-              setting: { logo, color, icon },
+              setting: { logo, color, txtColor, icon },
             }}
           />
         </main>

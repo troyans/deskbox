@@ -6,13 +6,13 @@ import { ScrollArea } from "@/components/ui/ScrollArea";
 
 export default function MailList({ items, onClick }: any) {
   return (
-    <ScrollArea className="h-screen">
+    <ScrollArea className="h-full">
       <div className="flex flex-col gap-2 p-4 pt-0">
         {items.map((item) => (
           <button
             key={item.id}
             className={cn(
-              "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent"
+              "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-primary hover:text-white"
               // mail.selected === item.id && "bg-muted"
             )}
             onClick={() => onClick(item.id)}

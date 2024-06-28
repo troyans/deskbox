@@ -115,6 +115,7 @@ model Conversations {
   projectId   String
   project     Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   messages    Messages[]
+  isAdmin     Boolean   @default(false)
   createdAt   DateTime  @default(now())
 }
 
@@ -130,4 +131,5 @@ model Messages {
 enum Speaker {
   USER
   AI
+  ADMIN
 }
