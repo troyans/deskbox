@@ -25,11 +25,11 @@ const DashboardLayout = ({ children }) => {
   }, [status]);
 
   return (
-    <div className="flex min-h-screen w-full flex-col">
-      <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 bg-white">
+    <div className="flex flex-col h-screen">
+      <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link
-            href="/dashboard"
+            href="#"
             className="flex items-center gap-2 text-lg font-semibold md:text-base"
           >
             <Package2 className="h-6 w-6" />
@@ -68,21 +68,21 @@ const DashboardLayout = ({ children }) => {
           <SheetContent side="left" className="bg-white">
             <nav className="grid gap-6 text-lg font-medium">
               <Link
-                href="/dashboard"
+                href="#"
                 className="flex items-center gap-2 text-lg font-semibold"
               >
                 <Package2 className="h-6 w-6" />
                 <span className="sr-only">Chatver</span>
               </Link>
-              <Link
-                href="/dashboard"
+              {/* <Link
+                href="#"
                 className="text-muted-foreground hover:text-foreground"
               >
                 Dashboard
               </Link>
               <Link href="#" className="hover:text-foreground">
                 Changelog
-              </Link>
+              </Link> */}
             </nav>
           </SheetContent>
         </Sheet>
@@ -117,7 +117,11 @@ const DashboardLayout = ({ children }) => {
           </DropdownMenu>
         </div>
       </header>
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+      <main
+        className={
+          "flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-[calc(100%-60px)]"
+        }
+      >
         {children}
       </main>
     </div>

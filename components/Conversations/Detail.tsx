@@ -1,25 +1,21 @@
 import React from "react";
 
 import { Label } from "../ui/Label";
-import { Textarea } from "../ui/Textarea";
-import { Button } from "../ui/Button";
-
-import { CornerDownLeft } from "lucide-react";
 import { useRouter } from "next/router";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import { Switch } from "../ui/Switch";
 import { cn } from "@/lib/utils";
 
-export default function ConversationDetail({ id, appearance }: any) {
+export default function ConversationDetail({ id, appearance, refetch }: any) {
   const router = useRouter();
   const chatHistoryRef = React.useRef(null);
   const containerRef = React.useRef(null);
+  const intervalId = React.useRef(null);
 
   const [isDataLoading, setIsDataLoading] = React.useState(true);
   const [admin, setAdmin] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [chatHistory, setChatHistory] = React.useState([]);
-  const [detail, setDetail] = React.useState({});
 
   React.useEffect(() => {
     if (id) {
@@ -27,6 +23,17 @@ export default function ConversationDetail({ id, appearance }: any) {
       fetchConversation();
     }
   }, [id]);
+
+  React.useEffect(() => {
+    if (admin) {
+      intervalId.current = setInterval(() => {
+        fetchContentEntries();
+      }, 1000);
+    }
+    if (!admin) {
+      clearInterval(intervalId.current);
+    }
+  }, [admin, id]);
 
   React.useEffect(() => {
     if (chatHistoryRef.current) {
@@ -77,7 +84,7 @@ export default function ConversationDetail({ id, appearance }: any) {
       `/api/projects/${router.query.id}/conversations/${id}/update`,
       {
         method: "PUT",
-        body: JSON.stringify({ isAdmin: e }),
+        body: JSON.stringify({ isAdmin: e, isRead: !e }),
         headers: {
           "Content-Type": "application/json",
           // Authorization: `Bearer ${getAccessToken()}`,
@@ -87,6 +94,7 @@ export default function ConversationDetail({ id, appearance }: any) {
     const data = await res.json();
 
     if (res.ok) {
+      refetch();
       setAdmin(data.isAdmin);
     }
   };
@@ -179,31 +187,38 @@ export default function ConversationDetail({ id, appearance }: any) {
               ))}
             </div>
             {id && (
-              <div
-                className={cn(
-                  "pt-4 mt-4 border-t flex",
-                  admin ? "pointer-events-auto" : "pointer-events-none"
-                )}
-              >
-                <input
-                  id="user-input"
-                  type="text"
-                  className="w-full px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  onChange={(e) => setQuery(e.target.value)}
-                  value={query}
-                />
-                <button
-                  id="send-button"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300"
-                  style={{
-                    background: appearance.setting.color,
-                    color: appearance.setting.txtColor,
-                  }}
-                  onClick={() => chatNow()}
-                  disabled={isDataLoading}
+              <div className="mt-auto">
+                <div
+                  className={cn(
+                    "pt-4 mt-4 border-t flex",
+                    admin ? "pointer-events-auto" : "pointer-events-none"
+                  )}
                 >
-                  Send
-                </button>
+                  <input
+                    id="user-input"
+                    type="text"
+                    className="w-full px-3 py-2 border rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    onChange={(e) => setQuery(e.target.value)}
+                    value={query}
+                    onKeyUp={(e) => {
+                      if (e.key === "Enter") {
+                        chatNow();
+                      }
+                    }}
+                  />
+                  <button
+                    id="send-button"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-r-md hover:bg-blue-600 transition duration-300"
+                    style={{
+                      background: appearance.setting.color,
+                      color: appearance.setting.txtColor,
+                    }}
+                    onClick={() => chatNow()}
+                    disabled={isDataLoading}
+                  >
+                    Send
+                  </button>
+                </div>
               </div>
             )}
           </div>

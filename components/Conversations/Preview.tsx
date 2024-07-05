@@ -152,7 +152,8 @@ export default function ConversationPreview({ project }: any) {
 
   return (
     <>
-      <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2 border">
+      {/* <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2 border"> */}
+      <div className="relative flex h-full flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2 border">
         <div className="wrapper-chatver">
           <div className="absolute bottom-0 right-0 mb-4 mr-4">
             <button

@@ -70,7 +70,7 @@ export default function Dashboard(props) {
                       Copy Link
                     </div>
                     <Link
-                      href={`/project/${item.id}/dashboard`}
+                      href={`/project/${item.id}/inbox`}
                       className="text-xs text-muted-foreground"
                     >
                       Setting

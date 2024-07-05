@@ -44,13 +44,13 @@ export default function ProjectCreate(props) {
       const appContentEntry = {
         uploadId,
         fileName: file.name,
-        namespace: router.query.id,
+        namespace: data.id,
         createdAt: new Date(),
       };
 
       formData.append(
         `namespace${index}`,
-        Array.isArray(router.query.id) ? router.query.id[0] : router.query.id
+        Array.isArray(data.id) ? data.id[0] : data.id
       );
       formData.append(`uploadId${index}`, appContentEntry.uploadId);
       formData.append(`filename${index}`, appContentEntry.fileName);
@@ -65,10 +65,13 @@ export default function ProjectCreate(props) {
       await response.json();
 
       await files.forEach(async (file: File) => {
-        await createContentEntry({
-          uploadId,
-          fileName: file.name,
-        });
+        await createContentEntry(
+          {
+            uploadId,
+            fileName: file.name,
+          },
+          data.id
+        );
       });
 
       fileInputRef.current.value = "";
@@ -89,17 +92,14 @@ export default function ProjectCreate(props) {
     }
   };
 
-  async function createContentEntry(data) {
-    const response = await fetch(
-      `/api/projects/${router.query.id}/files/create`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      }
-    );
+  async function createContentEntry(data, id) {
+    const response = await fetch(`/api/projects/${id}/files/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
     if (response.ok) {
       return true;
@@ -178,112 +178,121 @@ export default function ProjectCreate(props) {
   return (
     <>
       <DashboardLayout>
-        <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
-          <div className="border rounded-xl">
+        <main className="flex flex-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 h-full">
+          <div className="border rounded-xl flex flex-col flex-1 h-full w-1/3">
             <div className="flex items-center px-4 py-2">
-              <h1 className="text-xl font-bold">Setup Bot</h1>
+              <h1 className="text-xl font-bold">
+                Create Your Customer Support Assistant
+              </h1>
             </div>
             <Separator className="bg-gray-200" />
-            <form
-              className="grid w-full items-start gap-6 p-4"
-              onSubmit={handleSubmit}
-            >
-              <div className="grid gap-3">
-                <Label htmlFor="name">Name *</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="Name"
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="tooltip">Tooltip</Label>
-                <Input
-                  id="tooltip"
-                  type="text"
-                  placeholder="Tooltip"
-                  onChange={(e) => setTooltip(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="welcome">Welcome</Label>
-                <Input
-                  id="welcome"
-                  type="text"
-                  placeholder="Welcom"
-                  onChange={(e) => setWelcome(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="placeholder">Placeholder</Label>
-                <Input
-                  id="placeholder"
-                  type="text"
-                  placeholder="Placeholder"
-                  onChange={(e) => setPlaceholder(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="color">Brand color</Label>
-                <HexAlphaColorPicker color={color} onChange={setColor} />
-                <HexColorInput
-                  color={color}
-                  onChange={setColor}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="color">Text color</Label>
-                <HexAlphaColorPicker color={txtColor} onChange={setTxtColor} />
-                <HexColorInput
-                  color={txtColor}
-                  onChange={setTxtColor}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="color">Icon</Label>
-                <Input
-                  type="file"
-                  accept=".svg, .png, .jpg, .webp"
-                  name="file"
-                  ref={fileInputRef2}
-                  onChange={async (e: React.ChangeEvent<HTMLInputElement>) =>
-                    uploadFile(e)
-                  }
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="color">Upload File</Label>
-                <Input
-                  type="file"
-                  accept=".pdf, .txt, .docx, .csv, .json"
-                  name="file"
-                  ref={fileInputRef}
-                  onChange={(e) => setFiles(Array.from(e.target.files))}
-                />
-              </div>
-              <Button
-                type="submit"
-                size="sm"
-                className="ml-auto gap-1.5 text-white"
-                disabled={isDataLoading}
+            <div className="h-[calc(100%-76px)] overflow-auto mt-4">
+              <form
+                className="grid w-full items-start gap-6 px-4"
+                onSubmit={handleSubmit}
               >
-                Create Project
-              </Button>
-            </form>
+                <div className="grid gap-3">
+                  <Label htmlFor="name">Name *</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="Name"
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="tooltip">Tooltip</Label>
+                  <Input
+                    id="tooltip"
+                    type="text"
+                    placeholder="Tooltip"
+                    onChange={(e) => setTooltip(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="welcome">Welcome</Label>
+                  <Input
+                    id="welcome"
+                    type="text"
+                    placeholder="Welcome"
+                    onChange={(e) => setWelcome(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="placeholder">Placeholder</Label>
+                  <Input
+                    id="placeholder"
+                    type="text"
+                    placeholder="Placeholder"
+                    onChange={(e) => setPlaceholder(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="color">Brand color</Label>
+                  <HexAlphaColorPicker color={color} onChange={setColor} />
+                  <HexColorInput
+                    color={color}
+                    onChange={setColor}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="color">Text color</Label>
+                  <HexAlphaColorPicker
+                    color={txtColor}
+                    onChange={setTxtColor}
+                  />
+                  <HexColorInput
+                    color={txtColor}
+                    onChange={setTxtColor}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="color">Icon</Label>
+                  <Input
+                    type="file"
+                    accept=".svg, .png, .jpg, .webp"
+                    name="file"
+                    ref={fileInputRef2}
+                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) =>
+                      uploadFile(e)
+                    }
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="color">Upload File</Label>
+                  <Input
+                    type="file"
+                    accept=".pdf, .txt, .docx, .csv, .json"
+                    name="file"
+                    ref={fileInputRef}
+                    onChange={(e) => setFiles(Array.from(e.target.files))}
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  size="sm"
+                  className="ml-auto gap-1.5 text-white"
+                  disabled={isDataLoading}
+                >
+                  Create Project
+                </Button>
+              </form>
+            </div>
           </div>
-          <ConversationPreview
-            project={{
-              title,
-              tooltip,
-              welcome,
-              placeholder,
-              setting: { logo, color, txtColor, icon },
-            }}
-          />
+          <div className="w-2/3">
+            <ConversationPreview
+              project={{
+                title,
+                tooltip,
+                welcome,
+                placeholder,
+                setting: { logo, color, txtColor, icon },
+              }}
+            />
+          </div>
         </main>
       </DashboardLayout>
     </>
