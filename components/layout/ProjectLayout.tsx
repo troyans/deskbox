@@ -70,14 +70,16 @@ const ProjectLayout = ({ children }) => {
     <div
       className={cn(
         "grid w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] bg-white min-h-screen",
-        router.asPath.includes("inbox") ? "max-h-screen" : "min-h-screen"
+        router.asPath.includes("inbox") || router.asPath.includes("appearance")
+          ? "max-h-screen"
+          : "min-h-screen"
       )}
     >
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link
-              href={`/project/${query.id}/dashboard`}
+              href={`/project/${query.id}/inbox`}
               className="flex items-center gap-2 font-semibold"
             >
               <Package2 className="h-6 w-6" />
@@ -150,7 +152,7 @@ const ProjectLayout = ({ children }) => {
                 </CollapsibleContent>
               </Collapsible>
               <Link
-                href={`#`}
+                href={`/project/${query.id}/report`}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
                   router.pathname === `/project/[id]/report`
@@ -161,35 +163,19 @@ const ProjectLayout = ({ children }) => {
                 <FolderLock className="h-4 w-4" />
                 Report
               </Link>
-              {/* <Link
-                href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <ShoppingCart className="h-4 w-4" />
-                Orders
-                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                  6
-                </Badge>
-              </Link> */}
-              {/* <Link
-                href={`/project/${query.id}/history`}
-                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <MessageCircle className="h-4 w-4" />
-                Chat History
-              </Link> */}
-              {/* <Link
-                href={`/project/${query.id}/link`}
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Link2 className="h-4 w-4" />
-                Links
-              </Link> */}
             </nav>
           </div>
         </div>
       </div>
-      <div className={"flex flex-col"}>
+      <div
+        className={cn(
+          "flex flex-col",
+          router.asPath.includes("inbox") ||
+            router.asPath.includes("appearance")
+            ? "max-h-screen"
+            : ""
+        )}
+      >
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
@@ -205,62 +191,87 @@ const ProjectLayout = ({ children }) => {
             <SheetContent side="left" className="flex flex-col bg-white">
               <nav className="grid gap-2 text-lg font-medium">
                 <Link
-                  href="/dashboard"
+                  href={`/project/${query.id}/inbox`}
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Package2 className="h-6 w-6" />
                   <span className="sr-only">Chatver</span>
                 </Link>
                 <Link
-                  href={`/project/${query.id}/dashboard`}
+                  href={`/project/${query.id}/inbox`}
                   className={cn(
-                    "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground",
-                    router.pathname === `/project/[id]/dashboard`
+                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                    router.pathname === `/project/[id]/inbox`
                       ? "text-primary bg-muted"
                       : "text-muted-foreground"
                   )}
                 >
-                  <LineChart className="h-5 w-5" />
-                  Dashboard
+                  <Inbox className="h-4 w-4" />
+                  Inbox
                 </Link>
+                <Collapsible
+                  open={
+                    router.pathname === `/project/[id]/file` ||
+                    router.pathname === `/project/[id]/appearance` ||
+                    router.pathname === `/project/[id]/install` ||
+                    open
+                  }
+                >
+                  <CollapsibleTrigger
+                    className="flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary"
+                    onClick={() => setOpen(!open)}
+                  >
+                    <BotIcon className="h-4 w-4" />
+                    Chatbot
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="ml-7">
+                    <Link
+                      href={`/project/${query.id}/file`}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                        router.pathname === `/project/[id]/file`
+                          ? "text-primary bg-muted"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      Knowledge Base
+                    </Link>
+                    <Link
+                      href={`/project/${query.id}/appearance`}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                        router.pathname === `/project/[id]/appearance`
+                          ? "text-primary bg-muted"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      Appearance
+                    </Link>
+                    <Link
+                      href={`/project/${query.id}/install`}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                        router.pathname === `/project/[id]/install`
+                          ? "text-primary bg-muted"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      Installation
+                    </Link>
+                  </CollapsibleContent>
+                </Collapsible>
                 <Link
-                  href={`/project/${query.id}/file`}
+                  href={`/project/${query.id}/report`}
                   className={cn(
-                    "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground",
-                    router.pathname === `/project/[id]/file`
+                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                    router.pathname === `/project/[id]/report`
                       ? "text-primary bg-muted"
                       : "text-muted-foreground"
                   )}
                 >
-                  <File className="h-5 w-5" />
-                  Files
+                  <FolderLock className="h-4 w-4" />
+                  Report
                 </Link>
-                <Link
-                  href={`/project/${query.id}/appearance`}
-                  className={cn(
-                    "mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 hover:text-foreground",
-                    router.pathname === `/project/[id]/appearance`
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  <Cat className="h-5 w-5" />
-                  Appearance
-                </Link>
-                {/* <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Users className="h-5 w-5" />
-                  Customers
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <LineChart className="h-5 w-5" />
-                  Analytics
-                </Link> */}
               </nav>
             </SheetContent>
           </Sheet>
@@ -307,8 +318,7 @@ const ProjectLayout = ({ children }) => {
         </header>
         <main
           className={cn(
-            "flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6",
-            router.asPath.includes("inbox") ? "h-[calc(100%-60px)]" : ""
+            "flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-[calc(100%-60px)]"
           )}
         >
           {children}

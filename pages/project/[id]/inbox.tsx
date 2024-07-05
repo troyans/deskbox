@@ -1,8 +1,7 @@
 import * as React from "react";
-import { Search, Settings } from "lucide-react";
+import { Search } from "lucide-react";
 
 import { Input } from "@/components/ui/Input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import MailList from "@/components/Conversations/List";
 import ProjectLayout from "@/components/layout/ProjectLayout";
 import ConversationDetail from "@/components/Conversations/Detail";
@@ -61,24 +60,10 @@ export default function ProjectInbox(props) {
 
   return (
     <ProjectLayout>
-      <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3 flex-auto">
-        <Tabs defaultValue="all" className="border rounded-xl">
+      <main className="flex flex-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 h-full">
+        <div className="border rounded-xl flex flex-col flex-1 h-full w-1/3">
           <div className="flex items-center px-4 py-2">
             <h1 className="text-xl font-bold">Inbox</h1>
-            {/* <TabsList className="ml-auto">
-              <TabsTrigger
-                value="all"
-                className="text-zinc-600 dark:text-zinc-200"
-              >
-                All mail
-              </TabsTrigger>
-              <TabsTrigger
-                value="unread"
-                className="text-zinc-600 dark:text-zinc-200"
-              >
-                Unread
-              </TabsTrigger>
-            </TabsList> */}
           </div>
           <Separator className="bg-gray-200" />
           <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -89,14 +74,21 @@ export default function ProjectInbox(props) {
               </div>
             </form>
           </div>
-          <TabsContent value="all" className="m-0">
-            <MailList items={appContent} onClick={(value) => setId(value)} />
-          </TabsContent>
-          <TabsContent value="unread" className="m-0">
-            <MailList items={appContent} onClick={(value) => setId(value)} />
-          </TabsContent>
-        </Tabs>
-        <ConversationDetail id={id} appearance={appearance} />
+          <div className="h-[calc(100%-132px)] overflow-auto">
+            <MailList
+              items={appContent}
+              id={id}
+              onClick={(value) => setId(value)}
+            />
+          </div>
+        </div>
+        <div className="w-2/3">
+          <ConversationDetail
+            id={id}
+            appearance={appearance}
+            refetch={() => fetchContentEntries()}
+          />
+        </div>
       </main>
     </ProjectLayout>
   );

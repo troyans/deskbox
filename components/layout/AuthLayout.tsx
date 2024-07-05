@@ -7,14 +7,12 @@ const AuthLayout = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log(data);
     if (status === "authenticated") {
       if (data.user.projects.length !== 0) {
         router.push(`/project/${data.user.projects[0].id}/inbox`);
       } else {
         router.push("/project/create");
       }
-      // router.push("/dashboard");
     }
   }, [status]);
 

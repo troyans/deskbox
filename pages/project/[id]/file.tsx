@@ -191,9 +191,9 @@ export default function ProjectFile(props) {
             <CardHeader>
               <div className="flex">
                 <div className="flex flex-col space-y-1.5">
-                  <CardTitle>Files</CardTitle>
+                  <CardTitle>Chatbot Knowledge Base</CardTitle>
                   <CardDescription>
-                    Manage your files and view their sales performance.
+                    Manage your knowledge base and view their response.
                   </CardDescription>
                 </div>
                 <div className="ml-auto flex items-center gap-2">

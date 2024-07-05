@@ -11,6 +11,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { useSession } from "next-auth/react";
 import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
+import { ScrollArea } from "@/components/ui/ScrollArea";
 
 export default function ProjectAppearance(props) {
   const router = useRouter();
@@ -132,109 +133,113 @@ export default function ProjectAppearance(props) {
   return (
     <>
       <ProjectLayout>
-        <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
-          <div className="border rounded-xl">
+        <main className="flex flex-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3 h-full">
+          <div className="border rounded-xl flex flex-col flex-1 h-full w-1/3">
             <div className="flex items-center px-4 py-2">
-              <h1 className="text-xl font-bold">Customization</h1>
+              <h1 className="text-xl font-bold">Chatbot Interface</h1>
             </div>
             <Separator className="bg-gray-200" />
-            <form
-              className="grid w-full items-start gap-6 p-4"
-              onSubmit={handleSubmit}
-            >
-              {/* <div className="grid gap-3">
-                <Label htmlFor="logo">Logo</Label>
-              </div> */}
-              <div className="grid gap-3">
-                <Label htmlFor="name">Name *</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={title}
-                  placeholder="Name"
-                  onChange={(e) => setTitle(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="tooltip">Tooltip</Label>
-                <Input
-                  id="tooltip"
-                  type="text"
-                  value={tooltip}
-                  placeholder="Tooltip"
-                  onChange={(e) => setTooltip(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="welcome">Welcome</Label>
-                <Input
-                  id="welcome"
-                  type="text"
-                  value={welcome}
-                  placeholder="Welcome"
-                  onChange={(e) => setWelcome(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="placeholder">Placeholder</Label>
-                <Input
-                  id="placeholder"
-                  type="text"
-                  value={placeholder}
-                  placeholder="Placeholder"
-                  onChange={(e) => setPlaceholder(e.target.value)}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="color">Brand color</Label>
-                <HexAlphaColorPicker color={color} onChange={setColor} />
-                <HexColorInput
-                  color={color}
-                  onChange={setColor}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="color">Text color</Label>
-                <HexAlphaColorPicker color={txtColor} onChange={setTxtColor} />
-                <HexColorInput
-                  color={txtColor}
-                  onChange={setTxtColor}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="color">Icon</Label>
-                <Input
-                  type="file"
-                  accept=".svg, .png, .jpg, .webp"
-                  name="file"
-                  ref={fileInputRef}
-                  onChange={async (e: React.ChangeEvent<HTMLInputElement>) =>
-                    uploadFile(e)
-                  }
-                />
-              </div>
-              <Button
-                type="submit"
-                size="sm"
-                className="ml-auto gap-1.5 text-white"
-                disabled={isDataLoading}
+            <div className="h-[calc(100%-76px)] overflow-auto mt-4">
+              <form
+                className="grid w-full items-start gap-6 px-4"
+                onSubmit={handleSubmit}
               >
-                Save Project
-              </Button>
-            </form>
+                <div className="grid gap-3">
+                  <Label htmlFor="name">Name *</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    value={title}
+                    placeholder="Name"
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="tooltip">Tooltip</Label>
+                  <Input
+                    id="tooltip"
+                    type="text"
+                    value={tooltip}
+                    placeholder="Tooltip"
+                    onChange={(e) => setTooltip(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="welcome">Welcome</Label>
+                  <Input
+                    id="welcome"
+                    type="text"
+                    value={welcome}
+                    placeholder="Welcome"
+                    onChange={(e) => setWelcome(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="placeholder">Placeholder</Label>
+                  <Input
+                    id="placeholder"
+                    type="text"
+                    value={placeholder}
+                    placeholder="Placeholder"
+                    onChange={(e) => setPlaceholder(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="color">Brand color</Label>
+                  <HexAlphaColorPicker color={color} onChange={setColor} />
+                  <HexColorInput
+                    color={color}
+                    onChange={setColor}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="color">Text color</Label>
+                  <HexAlphaColorPicker
+                    color={txtColor}
+                    onChange={setTxtColor}
+                  />
+                  <HexColorInput
+                    color={txtColor}
+                    onChange={setTxtColor}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="color">Icon</Label>
+                  <Input
+                    type="file"
+                    accept=".svg, .png, .jpg, .webp"
+                    name="file"
+                    ref={fileInputRef}
+                    onChange={async (e: React.ChangeEvent<HTMLInputElement>) =>
+                      uploadFile(e)
+                    }
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  size="sm"
+                  className="ml-auto gap-1.5 text-white"
+                  disabled={isDataLoading}
+                >
+                  Save Project
+                </Button>
+              </form>
+            </div>
           </div>
-          <ConversationPreview
-            project={{
-              title,
-              tooltip,
-              welcome,
-              placeholder,
-              setting: { logo, color, txtColor, icon },
-            }}
-          />
+          <div className="w-2/3">
+            <ConversationPreview
+              project={{
+                title,
+                tooltip,
+                welcome,
+                placeholder,
+                setting: { logo, color, txtColor, icon },
+              }}
+            />
+          </div>
         </main>
       </ProjectLayout>
     </>

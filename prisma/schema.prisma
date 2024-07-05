@@ -116,6 +116,7 @@ model Conversations {
   project     Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   messages    Messages[]
   isAdmin     Boolean   @default(false)
+  isRead      Boolean   @default(true)
   createdAt   DateTime  @default(now())
 }
 
