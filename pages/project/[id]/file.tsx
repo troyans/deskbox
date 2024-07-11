@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { MoreHorizontal, PlusCircle } from "lucide-react";
+import {
+  LibraryBig,
+  MoreHorizontal,
+  Palette,
+  PlusCircle,
+  SquareTerminal,
+} from "lucide-react";
 import {
   Card,
   CardContent,
@@ -37,9 +43,10 @@ import {
 } from "@/components/ui/AlertDialog";
 import { Input } from "@/components/ui/Input";
 import { v4 as uuidv4 } from "uuid";
-import { formatDefaultDate } from "@/lib/utils";
+import { cn, formatDefaultDate } from "@/lib/utils";
 import ProjectLayout from "@/components/layout/ProjectLayout";
 import { useToast } from "@/components/ui/Toast/use-toast";
+import Link from "next/link";
 
 export default function ProjectFile(props) {
   const router = useRouter();
@@ -186,18 +193,62 @@ export default function ProjectFile(props) {
   return (
     <>
       <ProjectLayout>
-        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-          <Card>
-            <CardHeader>
-              <div className="flex">
-                <div className="flex flex-col space-y-1.5">
-                  <CardTitle>Chatbot Knowledge Base</CardTitle>
-                  <CardDescription>
-                    Manage your knowledge base and view their response.
-                  </CardDescription>
-                </div>
-                <div className="ml-auto flex items-center gap-2">
-                  {/* <DropdownMenu>
+        <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="relative hidden flex-col items-start gap-4 md:flex">
+            <div className="flex items-center px-4 py-3">
+              <h1 className="text-xl font-bold">Chatbot</h1>
+            </div>
+            <div className="flex-1">
+              <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+                <Link
+                  href={`/project/${router.query.id}/file`}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                    router.pathname === `/project/[id]/file`
+                      ? "text-primary bg-muted"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  <LibraryBig className="h-4 w-4" />
+                  Knowledge Base
+                </Link>
+                <Link
+                  href={`/project/${router.query.id}/appearance`}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                    router.pathname === `/project/[id]/appearance`
+                      ? "text-primary bg-muted"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  <Palette className="h-4 w-4" />
+                  Appearance
+                </Link>
+                <Link
+                  href={`/project/${router.query.id}/install`}
+                  className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
+                    router.pathname === `/project/[id]/install`
+                      ? "text-primary bg-muted"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  <SquareTerminal className="h-4 w-4" />
+                  Installation
+                </Link>
+              </nav>
+            </div>
+          </div>
+          <div className="relative flex h-full min-h-[50vh] flex-col bg-muted/50 py-4 pl-4 lg:col-span-2 xl:col-span-4 border-l gap-6">
+            <div className="flex">
+              <div className="flex flex-col space-y-1.5">
+                <CardTitle>Chatbot Knowledge Base</CardTitle>
+                <CardDescription>
+                  Manage your knowledge base and view their response.
+                </CardDescription>
+              </div>
+              <div className="ml-auto flex items-center gap-2">
+                {/* <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button variant="outline" size="sm" className="h-8 gap-1">
                         <ListFilter className="h-3.5 w-3.5" />
@@ -224,124 +275,116 @@ export default function ProjectFile(props) {
                       Export
                     </span>
                   </Button> */}
-                  <AlertDialog open={openDialog}>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        size="sm"
-                        className="h-8 gap-1 text-white"
-                        onClick={() => setOpenDialog(true)}
-                      >
-                        <PlusCircle className="h-3.5 w-3.5 text-white" />
-                        <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                          Add File
-                        </span>
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className="bg-white">
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Upload File</AlertDialogTitle>
-                        <div>
-                          <div className="mt-4">
-                            <Input
-                              type="file"
-                              accept=".pdf, .txt, .docx, .csv, .json"
-                              name="file"
-                              ref={fileInputRef}
-                              onChange={(e) =>
-                                setFiles(Array.from(e.target.files))
-                              }
-                            />
-                          </div>
+                <AlertDialog open={openDialog}>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      size="sm"
+                      className="h-8 gap-1 text-white"
+                      onClick={() => setOpenDialog(true)}
+                    >
+                      <PlusCircle className="h-3.5 w-3.5 text-white" />
+                      <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                        Add File
+                      </span>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="bg-white">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Upload File</AlertDialogTitle>
+                      <div>
+                        <div className="mt-4">
+                          <Input
+                            type="file"
+                            accept=".pdf, .txt, .docx, .csv, .json"
+                            name="file"
+                            ref={fileInputRef}
+                            onChange={(e) =>
+                              setFiles(Array.from(e.target.files))
+                            }
+                          />
                         </div>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel
-                          onClick={() => setOpenDialog(false)}
-                          className="hover:bg-gray-100"
-                        >
-                          Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => handleFileChange()}
-                          disabled={isUploadLoading}
-                          className="text-white"
-                        >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
+                      </div>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel
+                        onClick={() => setOpenDialog(false)}
+                        className="hover:bg-gray-100"
+                      >
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => handleFileChange()}
+                        disabled={isUploadLoading}
+                        className="text-white"
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>File</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead className="hidden md:table-cell">
-                      Created at
-                    </TableHead>
-                    <TableHead>
-                      <span className="sr-only">Actions</span>
-                    </TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {(appContent || [])?.map((item) => {
-                    return (
-                      <TableRow key={item.id}>
-                        <TableCell className="font-medium">
-                          {item.fileName.replace(/\.[^/.]+$/, "")}
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {item.fileName.split(".").pop()}
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          {formatDefaultDate(new Date(item.createdAt))}
-                        </TableCell>
-                        <TableCell>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                aria-haspopup="true"
-                                size="icon"
-                                variant="ghost"
-                                className="hover:bg-primary hover:text-white focus:bg-primary focus:text-white"
-                              >
-                                <MoreHorizontal className="h-4 w-4" />
-                                <span className="sr-only">Toggle menu</span>
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                              align="end"
-                              className="bg-white"
+            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>File</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead className="hidden md:table-cell">
+                    Created at
+                  </TableHead>
+                  <TableHead>
+                    <span className="sr-only">Actions</span>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {(appContent || [])?.map((item) => {
+                  return (
+                    <TableRow key={item.id}>
+                      <TableCell className="font-medium">
+                        {item.fileName.replace(/\.[^/.]+$/, "")}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {item.fileName.split(".").pop()}
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell">
+                        {formatDefaultDate(new Date(item.createdAt))}
+                      </TableCell>
+                      <TableCell>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              aria-haspopup="true"
+                              size="icon"
+                              variant="ghost"
+                              className="hover:bg-primary hover:text-white focus:bg-primary focus:text-white"
                             >
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem
-                                className="hover:bg-primary hover:text-white focus:bg-primary focus:text-white"
-                                onClick={() =>
-                                  handleDelete(item.id, item.uploadId)
-                                }
-                              >
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </CardContent>
-            <CardFooter className="hidden">
-              <div className="text-xs text-muted-foreground">
-                Showing <strong>1-10</strong> of <strong>32</strong> products
-              </div>
-            </CardFooter>
-          </Card>
+                              <MoreHorizontal className="h-4 w-4" />
+                              <span className="sr-only">Toggle menu</span>
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="bg-white">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem
+                              className="hover:bg-primary hover:text-white focus:bg-primary focus:text-white"
+                              onClick={() =>
+                                handleDelete(item.id, item.uploadId)
+                              }
+                            >
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+            <div className="text-xs text-muted-foreground hidden">
+              Showing <strong>1-10</strong> of <strong>32</strong> products
+            </div>
+          </div>
         </main>
       </ProjectLayout>
     </>
