@@ -130,7 +130,7 @@ export default function ConversationDetail({ id, appearance, refetch }: any) {
 
   return (
     <>
-      <div className="relative flex h-full flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2 border">
+      <div className="relative flex h-full flex-col bg-muted/50 lg:col-span-2">
         <div className="flex-1 relative">
           <div
             ref={chatHistoryRef}

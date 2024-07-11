@@ -3,8 +3,9 @@ import React from "react";
 import { BotIcon, X } from "lucide-react";
 import { useRouter } from "next/router";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
+import { cn } from "@/lib/utils";
 
-export default function ConversationPreview({ project }: any) {
+export default function ConversationPreview({ project, className }: any) {
   const router = useRouter();
   const chatHistoryRef = React.useRef(null);
 
@@ -153,7 +154,12 @@ export default function ConversationPreview({ project }: any) {
   return (
     <>
       {/* <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2 border"> */}
-      <div className="relative flex h-full flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2 border">
+      <div
+        className={cn(
+          "relative flex h-full flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2 border",
+          className
+        )}
+      >
         <div className="wrapper-chatver">
           <div className="absolute bottom-0 right-0 mb-4 mr-4">
             <button
