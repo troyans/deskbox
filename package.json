@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npx prisma generate && next build",
+    "postbuild": "node ./scripts/generate-sitemap.mjs",
     "start": "next start",
     "lint": "next lint"
   },
@@ -42,6 +43,7 @@
     "faunadb": "^4.8.0",
     "firebase": "^10.12.2",
     "formidable": "^3.5.1",
+    "globby": "^14.0.2",
     "langchain": "^0.0.131",
     "lemonsqueezy.ts": "^0.1.7",
     "lucide-react": "^0.379.0",
@@ -56,6 +58,7 @@
     "pdf-parse": "^1.1.1",
     "pinecone-client": "^1.1.0",
     "postcss": "8.4.29",
+    "prettier": "^3.3.3",
     "prisma": "^5.2.0",
     "raw-body": "^2.5.2",
     "react": "^18.2.0",
