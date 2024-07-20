@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmln="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://chatver-dev.vercel.app/dashboard</loc>
+    <loc>https://deskbox.co//dashboard</loc>
   </url>
 
   <url>
-    <loc>https://chatver-dev.vercel.app/features</loc>
+    <loc>https://deskbox.co//features</loc>
   </url>
 
   <url>
-    <loc>https://chatver-dev.vercel.app</loc>
+    <loc>https://deskbox.co/</loc>
   </url>
 
   <url>
-    <loc>https://chatver-dev.vercel.app/login</loc>
+    <loc>https://deskbox.co//login</loc>
   </url>
 
   <url>
-    <loc>https://chatver-dev.vercel.app/pricing</loc>
+    <loc>https://deskbox.co//pricing</loc>
   </url>
 
   <url>
-    <loc>https://chatver-dev.vercel.app/register</loc>
+    <loc>https://deskbox.co//register</loc>
   </url>
 
   <url>
-    <loc
-      >https://chatver-dev.vercel.app/blog/how-can-ai-help-customer-servicex</loc
-    >
+    <loc>https://deskbox.co//blog/how-can-ai-help-customer-servicex</loc>
   </url>
 
   <url>
-    <loc>https://chatver-dev.vercel.app/blog/nextjs-boilerplate</loc>
+    <loc>https://deskbox.co//blog/how-chatbots-improve-customer-service</loc>
   </url>
 </urlset>
