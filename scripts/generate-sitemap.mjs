@@ -28,7 +28,7 @@ async function generate() {
 
             return `
               <url>
-                  <loc>${`https://chatver-dev.vercel.app${route}`}</loc>
+                  <loc>${`https://deskbox.co/${route}`}</loc>
               </url>
             `;
           })
