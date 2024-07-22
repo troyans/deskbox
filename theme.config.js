@@ -1,7 +1,7 @@
 export default {
-  logo: <span>BoilerCode.co Documentation</span>,
+  logo: <span>Deskbox Blog</span>,
   project: {
-    link: "https://boilercode.co",
+    link: "https://deskbox.co",
   },
   feedback: false,
   editLink: false,
