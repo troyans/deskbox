@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://deskbox.co//dashboard</loc>
+    <loc>https://deskbox.co/dashboard</loc>
   </url>
 
   <url>
-    <loc>https://deskbox.co//features</loc>
+    <loc>https://deskbox.co/features</loc>
   </url>
 
   <url>
-    <loc>https://deskbox.co/</loc>
+    <loc>https://deskbox.co</loc>
   </url>
 
   <url>
-    <loc>https://deskbox.co//login</loc>
+    <loc>https://deskbox.co/login</loc>
   </url>
 
   <url>
-    <loc>https://deskbox.co//pricing</loc>
+    <loc>https://deskbox.co/pricing</loc>
   </url>
 
   <url>
-    <loc>https://deskbox.co//register</loc>
+    <loc>https://deskbox.co/register</loc>
   </url>
 
   <url>
-    <loc>https://deskbox.co//blog/how-can-ai-help-customer-servicex</loc>
+    <loc
+      >https://deskbox.co/blog/benefits-of-automation-in-customer-support</loc
+    >
   </url>
 
   <url>
-    <loc>https://deskbox.co//blog/how-chatbots-improve-customer-service</loc>
+    <loc
+      >https://deskbox.co/blog/benefits-of-using-ai-chatbots-for-customer-support</loc
+    >
+  </url>
+
+  <url>
+    <loc>https://deskbox.co/blog/how-can-ai-help-customer-service</loc>
+  </url>
+
+  <url>
+    <loc>https://deskbox.co/blog/how-chatbots-improve-customer-service</loc>
   </url>
 </urlset>
