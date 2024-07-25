@@ -8,10 +8,10 @@ interface SeoProps {
 
 const SEO = ({ title, description, image }: SeoProps) => {
   //You can update your details here
-  const defaultTitle = "Chatver - Chatbot for Cust.Service";
-  const defaultDescription = "Chatver - Chatbot for Cust.Service";
+  const defaultTitle = "Deskbox - Chatbot Customer service ";
+  const defaultDescription = "Deskbox - Chatbot for Customer Service That Bring You Leads";
   const defaultImageLink = "https://www.pagepe.com/pagepeHeader2.png";
-  const url = "https://www.chatver.com";
+  const url = "https://www.deskbox.co";
 
   return (
     <Head>
