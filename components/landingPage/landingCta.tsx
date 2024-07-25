@@ -45,15 +45,14 @@ export default function LandingCta() {
   return (
     <section
       id="cta"
-      className="cta max-w-7xl mx-auto items-center mt-10 p-7 gap-y-20"
+      className="cta max-w-7xl mx-auto items-center mt-10 p-7 gap-y-30 py-20"
     >
       <div className="relative py-16">
         <div
           aria-hidden="true"
           className="absolute inset-0 h-max w-full m-auto grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20"
         >
-          <div className="blur-[106px] h-56 bg-gradient-to-br from-white to-blue-800 "></div>
-          <div className="blur-[106px] h-32 bg-gradient-to-r from-white to-blue-400 "></div>
+        
         </div>
 
         <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-6">
@@ -102,10 +101,10 @@ export default function LandingCta() {
             </div>
 
             <div className="mt-6 m-auto space-y-6 md:w-9/12">
-              <h1 className="text-center text-4xl font-bold text-gray-800 dark:text-white md:text-5xl">
+              <h1 className="text-center text-4xl font-bold dark:text-white md:text-5xl">
                 Ready to Automate Customer Support Job?
               </h1>
-              <p className="flex text-center text-xl text-gray-600 dark:text-gray-300 ">
+              <p className="flex text-center text-xl  dark:text-gray-300 ">
                 Be part of people around the world using Deskbox to reduce
                 repetitive customer support job
               </p>
@@ -114,7 +113,7 @@ export default function LandingCta() {
                   <div id="mc_embed_shell" className="min-w-full m-0">
                     <div
                       id="mc_embed_signup2"
-                      className="bg-indigo-800 px-10 py-10 rounded-xl w-full text-white"
+                      className="bg-[#5423E7] px-10 py-10 rounded-xl w-full text-white"
                     >
                       <form onSubmit={subscribeUser}>
                         <div className="mc-field-group flex flex-col md:flex-row gap-x-5 gap-y-5 w-full">
