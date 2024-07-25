@@ -28,11 +28,9 @@ export default function Home() {
 
       <section className="transformation"></section>
 
+      
+
       <LandingHowTo />
-
-      <LandingTestimonials />
-
-      <LandingFaq />
 
       <LandingCta />
 

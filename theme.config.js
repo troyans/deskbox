@@ -1,5 +1,5 @@
 export default {
-  logo: <span>Deskbox Blog</span>,
+  logo: <span>Deskbox</span>,
   project: {
     link: "https://deskbox.co",
   },
