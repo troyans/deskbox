@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://chatver-dev.vercel.app/sitemap.xml
+Sitemap: https://deskbox.co/sitemap.xml
