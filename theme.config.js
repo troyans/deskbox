@@ -89,7 +89,7 @@ export default {
                       <div className="ml-10 mt-6 sm:mt-0 sm:ml-5 lg:items-center lg:p-x-5 bg-blue-100">
                           <p className="text-lg font-bold text-gray-900 uppercase">Khul Anwar</p>
                           <p className="max-w-sm mt-3 text-sm font-normal leading-6 text-gray-500">Co-Founder Deskbox | Hubrank <br/>
-                          We just need to be right once</p>
+                          We Only Have to be Right Once</p>
 
                           <div className="flex items-center mt-6 space-x-1">
                               <a href="https://x.com/khulanwar" target="_blank" title="" className="text-sm font-bold text-gray-900 hover:underline"> Twitter</a>
