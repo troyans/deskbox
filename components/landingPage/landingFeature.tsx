@@ -1,4 +1,4 @@
-import LandingContainer from "./landingContainer";
+import LandingContainer from "../landingPage/landingContainer";
 import Card from "../elements/card";
 import Sprikle from "../elements/sprikle";
 import features from "@/config/featureSet";
