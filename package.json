@@ -54,6 +54,7 @@
     "next-themes": "^0.2.1",
     "nextra": "^2.13.4",
     "nextra-theme-blog": "^2.13.4",
+    "nextra-theme-docs": "^2.13.4",
     "nodemailer": "^6.9.5",
     "pdf-parse": "^1.1.1",
     "pinecone-client": "^1.1.0",
