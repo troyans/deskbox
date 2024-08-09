@@ -35,7 +35,7 @@ export default {
     </>
   ),
 
-  readMore: 'Read Now',
+  readMore: 'Read More',
 
   footer: (
     
@@ -77,31 +77,32 @@ export default {
 
   postFooter:(
       <section className="py-12 bg-white sm:py-16 lg:py-20">
-      <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-          <div className="max-w-2xl mx-auto overflow-hidden bg-white border border-gray-200">
-              <div className="px-4 py-5 sm:p-6 lg:p-8 lg:space-x-10">
-                  <div className="sm:flex sm:items-start lg:flex lg:flex-row lg:flex space-x-3">
+        <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+            <div className="max-w-2xl mx-auto overflow-hidden bg-white border border-gray-200">
+                <div className="px-4 py-5 sm:p-6 lg:p-8 lg:space-x-10">
+                    <div className="sm:flex sm:items-start lg:flex lg:flex-row lg:flex space-x-3">
 
-                      <div className="image mr-10">
-                        <img className="object-contain w-32 h-32 rounded-full shrink-0" src="https://pbs.twimg.com/profile_images/1797769990063730689/edaoBY7b_400x400.jpg" alt="" />
-                      </div>
+                        <div className="image mr-10">
+                          <img className="object-contain w-32 h-32 rounded-full shrink-0" src="https://pbs.twimg.com/profile_images/1797769990063730689/edaoBY7b_400x400.jpg" alt="" />
+                        </div>
 
 
-                      <div className="ml-10 mt-6 sm:mt-0 sm:ml-5 lg:items-center lg:p-x-5 bg-blue-100">
-                          <p className="text-lg font-bold text-gray-900 uppercase">Khul Anwar</p>
-                          <p className="max-w-sm mt-3 text-sm font-normal leading-6 text-gray-500">Co-Founder Deskbox | Hubrank <br/>
-                          We Only Have to be Right Once</p>
+                        <div className="ml-10 mt-6 sm:mt-0 sm:ml-5 lg:items-center lg:p-x-5 bg-blue-100">
+                            <p className="text-lg font-bold text-gray-900 uppercase">Khul Anwar</p>
+                            <p className="max-w-sm mt-3 text-sm font-normal leading-6 text-gray-500">Co-Founder Deskbox | Hubrank <br/>
+                            We Only Have to be Right Once</p>
 
-                          <div className="flex items-center mt-6 space-x-1">
-                              <a href="https://x.com/khulanwar" target="_blank" title="" className="text-sm font-bold text-gray-900 hover:underline"> Twitter</a>
+                            <div className="flex items-center mt-6 space-x-1">
+                                <a href="https://x.com/khulanwar" target="_blank" title="" className="text-sm font-bold text-gray-900 hover:underline"> Twitter</a>
 
-                              
-                          </div>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       </section>
 
   ),

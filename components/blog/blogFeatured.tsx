@@ -4,6 +4,7 @@ const BlogFeatured = () => {
   return (
 
     <section className="py-12 bg-black sm:py-16 lg:py-20 xl:py-24">
+        
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="max-w-3xl text-center lg:text-left">
                 <p className="text-lg font-normal text-gray-400">Amet minim mollit non deserunt ullamco.</p>
