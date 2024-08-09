@@ -7,7 +7,7 @@
 @import "tailwindcss/utilities";
 
 html {
-  font-family: Urbanist, sans-serif;
+  font-family: ui-sans, sans-serif;
   scroll-behavior: smooth;
 }
 
@@ -50,4 +50,19 @@ body {
   background-color: var(--secondary);
   border-radius: 14px;
   border: 3px solid var(--primary);
+}
+
+.post-item{
+  padding:2em;
+  border-radius: 10px;
+  margin:10px;
+}
+
+.post-item h3 a{
+  font-size: x-large;
+  font-weight:800 !important;
+}
+
+.post-item a:hover{
+  color:#5423E7;
 }
