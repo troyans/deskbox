@@ -12,6 +12,7 @@ import { gtmPageView } from "@/lib/gtm";
 import { TooltipProvider } from "@/components/ui/Tooltip";
 import { Toaster } from "@/components/ui/Toast/toaster";
 
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
@@ -26,6 +27,7 @@ export default function App({
 
   return (
     <>
+      
       <GoogleAnalytics />
       <SEO />
       <SessionProvider session={session}>

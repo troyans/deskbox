@@ -1,4 +1,9 @@
 export default {
+
+
+  sidebar: {
+    defaultMenuCollapsed: false, // Ensures the sidebar is expanded by default
+  },
   
   navs: [
     
