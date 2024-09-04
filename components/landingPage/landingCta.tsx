@@ -43,120 +43,41 @@ export default function LandingCta() {
   }, [status]);
 
   return (
-    <section
-      id="cta"
-      className="cta max-w-7xl mx-auto items-center mt-10 p-7 gap-y-30 py-20"
-    >
-      <div className="relative py-16">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 h-max w-full m-auto grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20"
-        >
+
+    
+
+    <section id="cta" className="cta py-12 bg-black sm:py-16 lg:py-20 xl:py-24">
+
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         
-        </div>
+        <div className="max-w-lg mx-auto text-center md:max-w-2xl">
+          <h2 className="text-3xl font-normal text-white sm:text-4xl lg:text-5xl xl:text-6xl">Join the waiting list</h2>
 
-        <div className="max-w-7xl mx-auto px-6 md:px-12 xl:px-6">
-          <div className="relative">
-            <div className="flex items-center justify-center -space-x-2">
-              <img
-                loading="lazy"
-                width="400"
-                height="400"
-                src="https://randomuser.me/api/portraits/women/12.jpg"
-                alt="member photo"
-                className="h-8 w-8 rounded-full object-cover"
-              />
-              <img
-                loading="lazy"
-                width="200"
-                height="200"
-                src="https://randomuser.me/api/portraits/women/45.jpg"
-                alt="member photo"
-                className="h-12 w-12 rounded-full object-cover"
-              />
-              <img
-                loading="lazy"
-                width="200"
-                height="200"
-                src="https://randomuser.me/api/portraits/women/60.jpg"
-                alt="member photo"
-                className="z-10 h-16 w-16 rounded-full object-cover"
-              />
-              <img
-                loading="lazy"
-                width="200"
-                height="200"
-                src="https://randomuser.me/api/portraits/women/4.jpg"
-                alt="member photo"
-                className="relative h-12 w-12 rounded-full object-cover"
-              />
-              <img
-                loading="lazy"
-                width="200"
-                height="200"
-                src="https://randomuser.me/api/portraits/women/34.jpg"
-                alt="member photo"
-                className="h-8 w-8 rounded-full object-cover"
-              />
-            </div>
+          
+          <form action="https://app.loops.so/api/newsletter-form/cm0nme3iy00lrao1h8fyxkxz0" method="POST" className="relative mt-8 rounded-full sm:mt-12">
+            
+            <div className="relative">
+                <div className="absolute rounded-full -inset-px bg-gradient-to-r from-cyan-500 to-purple-500"></div>
+                
+                <div className="relative">
+                    <input type="email" name="email" id="" placeholder="you@email.com" className="block w-full px-6 py-4 text-white placeholder-gray-500 bg-black border border-transparent rounded-full sm:py-5 focus:border-transparent focus:ring-0" />
+                    
 
-            <div className="mt-6 m-auto space-y-6 md:w-9/12">
-              <h1 className="text-center text-4xl font-bold dark:text-white md:text-5xl">
-                Ready to Automate Customer Support Job?
-              </h1>
-              <p className="flex text-center text-xl  dark:text-gray-300 ">
-                Be part of people around the world using Deskbox to reduce
-                repetitive customer support job
-              </p>
-              <div className="flex flex-wrap justify-center gap-6 w-full">
-                <div>
-                  <div id="mc_embed_shell" className="min-w-full m-0">
-                    <div
-                      id="mc_embed_signup2"
-                      className="bg-[#5423E7] px-10 py-10 rounded-xl w-full text-white"
-                    >
-                      <form onSubmit={subscribeUser}>
-                        <div className="mc-field-group flex flex-col md:flex-row gap-x-5 gap-y-5 w-full">
-                          <input
-                            placeholder="Email"
-                            name="EMAIL"
-                            className="required email bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-2xl w-full px-3 py-3"
-                            id="mce-EMAIL"
-                            required={true}
-                            type="email"
-                            ref={inputRef}
-                          />
-                          <input
-                            type="submit"
-                            name="subscribe"
-                            id="mc-embedded-subscribe"
-                            className="button text-sm outline outline-style:solid text-white px-10 py-3 rounded-2xl font-semibold cursor-pointer "
-                            value="Request Access"
-                          />
-                        </div>
-                        {res && (
-                          <div className="text-center text-xs mt-2">
-                            {!res.success && (
-                              <div className="response text-danger">
-                                {res.message}
-                              </div>
-                            )}
-                            {res.success && (
-                              <div className="response text-success">
-                                {res.message}
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </form>
-                    </div>
-                  </div>
                 </div>
-              </div>
+
             </div>
-          </div>
+            
+            <div className="sm:absolute flex sm:right-1.5 sm:inset-y-1.5 mt-4 sm:mt-0">
+                <button type="submit" className="inline-flex items-center justify-center w-full px-5 py-5 text-sm font-semibold tracking-widest text-black uppercase transition-all duration-200 bg-white rounded-full sm:w-auto sm:py-3 hover:opacity-90">Join Waiting List</button>
+            </div>
+          </form>
+
+          
+
         </div>
+
       </div>
+
     </section>
   );
 }

@@ -9,6 +9,7 @@ import LandingCta from "@/components/landingPage/landingCta";
 import AuthLayout from "@/components/layout/AuthLayout";
 import LandingTestimonials from "@/components/landingPage/landingTestimonials";
 import LandingFaq from "@/components/landingPage/landingFaq";
+import LandingIntegration from "@/components/landingPage/landingIntegration";
 
 export default function Home() {
   const { systemTheme, theme, setTheme } = useTheme();
@@ -18,23 +19,19 @@ export default function Home() {
 
   return (
     <AuthLayout>
-      <LandingHeader />
+      
 
       <LandingHero />
 
-      <section className="logos"></section>
-
       <LandingFeature />
 
-      <section className="transformation"></section>
-
-      
+      <LandingIntegration />
 
       <LandingHowTo />
 
       <LandingCta />
 
-      <LandingFooter />
+ 
     </AuthLayout>
   );
 }
