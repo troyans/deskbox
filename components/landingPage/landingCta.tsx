@@ -21,16 +21,15 @@ export default function LandingCta() {
     const formBody = `email=${encodeURIComponent(inputRef.current.value)}`;
 
     try {
-      const res = await fetch("https://app.loops.so/api/newsletter-form/cm0nme3iy00lrao1h8fyxkxz0", {
+      const response = await fetch("https://app.loops.so/api/newsletter-form/cm0nme3iy00lrao1h8fyxkxz0", {
         method: "POST",
         body: formBody,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
-      console.log(await res.json())
-
-      setRes(await res.json());
+      
+      setRes(await response.json());
     } catch (error) {
       console.log(error);
     }
@@ -60,7 +59,7 @@ export default function LandingCta() {
           </form>
 
           {res && (
-            <div className="text-center text-xs mt-2">
+            <div className="text-center text-sm mt-2">
               {!res.success && (
                 <div className="response text-danger">
                   There was an issue submitting your data to the server. Please try again later.
