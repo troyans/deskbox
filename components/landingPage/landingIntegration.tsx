@@ -37,16 +37,16 @@ const LandingIntegration= () => {
                 <div className="overflow-hidden bg-white rounded shadow">
                     <div className="p-8">
                         <div className="flex items-center">
-                            <img className="flex-shrink-0 w-12 h-auto" src="https://cdn.rareblocks.xyz/collection/celebration/images/integration/3/intercom-logo.png" alt="" />
+                            <img className="flex-shrink-0 w-12 h-auto" src="img/whatsapp.png" alt="" />
                             <div className="ml-5 mr-auto">
-                                <p className="text-xl font-semibold text-black">Intercom</p>
+                                <p className="text-xl font-semibold text-black">Whatsapp</p>
                                 
                             </div>
                             <svg className="hidden w-5 h-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
                         </div>
-                        <p className="text-base leading-relaxed text-gray-600 mt-7">Escalate to a human agent on Intercom  when customer need to talk with agent </p>
+                        <p className="text-base leading-relaxed text-gray-600 mt-7">Set up your chatbot on WhatsApp to provide instant responses to your customer</p>
                     </div>
                 </div>
 
