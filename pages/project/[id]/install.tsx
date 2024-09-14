@@ -7,10 +7,37 @@ import { Button } from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast/use-toast";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import SidebarChatbot from "@/components/sidebar/chatbot";
 
 export default function ProjectInstall(props) {
   const router = useRouter();
   const { toast } = useToast();
+
+  const [isDataLoading, setIsDataLoading] = React.useState(true);
+  const [intercom, setIntercom] = React.useState("");
+
+  const fetchContentEntries = async () => {
+    setIsDataLoading(true);
+    const response = await fetch(`/api/projects/${router.query.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const appContent = await response.json();
+
+    if (response.ok) {
+      setIntercom(JSON.parse(appContent.setting)?.intercom || "");
+    }
+
+    setIsDataLoading(false);
+  };
+
+  React.useEffect(() => {
+    if (router.query.id) {
+      fetchContentEntries();
+    }
+  }, [router.query.id]);
 
   const copylink = (text) => {
     navigator.clipboard.writeText(text);
@@ -23,51 +50,7 @@ export default function ProjectInstall(props) {
   return (
     <ProjectLayout>
       <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        <div className="relative hidden flex-col items-start gap-4 md:flex">
-          <div className="flex items-center px-4 py-3">
-            <h1 className="text-xl font-bold">Chatbot</h1>
-          </div>
-          <div className="flex-1">
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <Link
-                href={`/project/${router.query.id}/file`}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                  router.pathname === `/project/[id]/file`
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                )}
-              >
-                <LibraryBig className="h-4 w-4" />
-                Knowledge Base
-              </Link>
-              <Link
-                href={`/project/${router.query.id}/appearance`}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                  router.pathname === `/project/[id]/appearance`
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                )}
-              >
-                <Palette className="h-4 w-4" />
-                Appearance
-              </Link>
-              <Link
-                href={`/project/${router.query.id}/install`}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                  router.pathname === `/project/[id]/install`
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                )}
-              >
-                <SquareTerminal className="h-4 w-4" />
-                Installation
-              </Link>
-            </nav>
-          </div>
-        </div>
+        <SidebarChatbot />
         <div className="relative flex h-full min-h-[50vh] flex-col bg-muted/50 py-4 pl-4 lg:col-span-2 xl:col-span-4 border-l gap-6">
           <div className="flex gap-6 flex-col">
             <div className="flex-auto max-w-4xl">
@@ -75,7 +58,7 @@ export default function ProjectInstall(props) {
                 Installation
               </p>
               <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">
-                Install Chatver in Your Website
+                Install Deskbox in Your Website
               </h1>
             </div>
             <div className="mb-6 col-span-2 xl:mb-0">
@@ -96,11 +79,11 @@ export default function ProjectInstall(props) {
                       onClick={() =>
                         copylink(`<script>
   (function (w,d,s,o,f,js,fjs) {
-    w['Chatver-Widget']=o;w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments) };
+    w['Deskbox-Widget']=o;w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments) };
     js = d.createElement(s), fjs = d.getElementsByTagName(s)[0];
     js.id = o; js.src = f; js.async = 1; fjs.parentNode.insertBefore(js, fjs);
   }(window, document, 'script', 'mw', '${process.env.NEXTAUTH_URL}/js/widget.js'));
-  mw('init', { projectId: '${router.query.id}' });
+  mw('init', { projectId: '${router.query.id}' ${intercom ? ", workspaceId: '" + intercom + "'" : ""}});
 </script>`)
                       }
                     >
@@ -116,11 +99,11 @@ export default function ProjectInstall(props) {
                       <span className="flex-auto">
                         {`<script>
   (function (w,d,s,o,f,js,fjs) {
-    w['Chatver-Widget']=o;w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments) };
+    w['Deskbox-Widget']=o;w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments) };
     js = d.createElement(s), fjs = d.getElementsByTagName(s)[0];
     js.id = o; js.src = f; js.async = 1; fjs.parentNode.insertBefore(js, fjs);
   }(window, document, 'script', 'mw', '${process.env.NEXTAUTH_URL}/js/widget.js'));
-  mw('init', { projectId: '${router.query.id}' });
+  mw('init', { projectId: '${router.query.id}' ${intercom ? ", workspaceId: '" + intercom + "'" : ""}});
 </script>`}
                       </span>
                     </span>

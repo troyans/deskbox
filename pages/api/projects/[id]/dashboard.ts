@@ -1,10 +1,19 @@
 import prisma from "@/lib/prismaClient";
+import { checkAuth } from "@/lib/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
+    await checkAuth(req, res);
     try {
       const file = await prisma.documents.count({
+        where: {
+          projectId: Array.isArray(req.query.id)
+            ? req.query.id[0]
+            : req.query.id,
+        },
+      });
+      const link = await prisma.links.count({
         where: {
           projectId: Array.isArray(req.query.id)
             ? req.query.id[0]
@@ -30,7 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           _count: {
             select: {
               messages: {
-                where: { OR: [{ speaker: "ADMIN" }, { speaker: "USER" }] },
+                where: { OR: [{ speaker: "ADMIN" }] },
               },
             },
           },
@@ -43,7 +52,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       });
       const data = {
         files: file,
-        urls: 0,
+        urls: link,
         bots: bot.reduce((accumulator, currentValue) => {
           return accumulator + currentValue._count.messages;
         }, 0),

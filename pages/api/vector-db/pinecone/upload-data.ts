@@ -1,6 +1,6 @@
-import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import { TextLoader } from "langchain/document_loaders/fs/text";
-import { DocxLoader } from "langchain/document_loaders/fs/docx";
+import { DocxLoader } from "@langchain/community/document_loaders/fs/docx";
 import { CSVLoader } from "langchain/document_loaders/fs/csv";
 import { JSONLoader } from "langchain/document_loaders/fs/json";
 import fs from "fs";
@@ -14,6 +14,7 @@ import { storage } from "@/lib/firebase";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Formidable } from "formidable";
 import { getToken } from "next-auth/jwt";
+import { checkAuth } from "@/lib/utils";
 
 const maxFiles = 10; // Maximum number of files
 
@@ -26,6 +27,7 @@ export const config = {
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
+    await checkAuth(req, res);
     try {
       const token = await getToken({
         req: req,

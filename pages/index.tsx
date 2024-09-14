@@ -11,7 +11,7 @@ import LandingTestimonials from "@/components/landingPage/landingTestimonials";
 import LandingFaq from "@/components/landingPage/landingFaq";
 import LandingIntegration from "@/components/landingPage/landingIntegration";
 
-export default function Home() {
+export default function Home(props) {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
 
@@ -19,8 +19,6 @@ export default function Home() {
 
   return (
     <AuthLayout>
-      
-
       <LandingHero />
 
       <LandingFeature />
@@ -30,8 +28,6 @@ export default function Home() {
       <LandingHowTo />
 
       <LandingCta />
-
- 
     </AuthLayout>
   );
 }

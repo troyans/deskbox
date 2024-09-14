@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import { validateEmail } from "../../lib/utils";
 import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import AuthLayout from "@/components/layout/AuthLayout";
@@ -55,12 +54,6 @@ const LoginPage = (props) => {
   };
 
   const validate = () => {
-    // let emailIsValid = validateEmail(email);
-
-    // if (!emailIsValid) {
-    //   setEmailInputError(true);
-    //   return;
-    // }
     if (password.length < 6) {
       setPasswordInputError(true);
     } else {
@@ -116,9 +109,6 @@ const LoginPage = (props) => {
                 >
                   Login
                 </Button>
-                {/* <Button variant="outline" className="w-full">
-                  Login with Google
-                </Button> */}
               </div>
             </form>
             <div className="mt-4 text-center text-sm">

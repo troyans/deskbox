@@ -49,6 +49,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   projects      Projects[]
+  notion_accounts NotionAccount[]
 }
 
 model VerificationToken {
@@ -103,6 +104,7 @@ model Documents {
 model Links {
   id          String    @id @default(cuid())
   url         String?
+  uploadId    String
   projectId   String
   project     Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   createdAt   DateTime  @default(now())
@@ -133,4 +135,19 @@ enum Speaker {
   USER
   AI
   ADMIN
+}
+
+model NotionAccount {
+  id             String  @id @default(cuid())
+  user_id        String
+  type           String?
+  userNotion_id  String
+  refresh_token  String?
+  access_token   String  @db.Text
+  workspace_name String? @db.Text
+  workspace_id   String?
+  template_id    String?
+  email_notion   String? @db.Text
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
 }

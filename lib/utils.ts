@@ -1,4 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
+import { getToken } from "next-auth/jwt";
+import { NextApiRequest, NextApiResponse } from "next";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -35,4 +37,23 @@ export const formatDefaultDate = (date: Date) => {
   const month = date.getMonth();
   const year = date.getFullYear();
   return `${day} ${getMonthName(month)} ${year}`;
+};
+
+export const isValidHttpUrl = (url: string) => {
+  try {
+    const newUrl = new URL(url);
+    return newUrl.protocol === "http:" || newUrl.protocol === "https:";
+  } catch (err) {
+    return false;
+  }
+};
+
+export const checkAuth = async (req: NextApiRequest, res: NextApiResponse) => {
+  const token = await getToken({
+    req: req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
+
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
+  return token;
 };
