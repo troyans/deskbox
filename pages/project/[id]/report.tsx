@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CreditCard, DollarSign, Users } from "lucide-react";
+import { BotIcon, File, Link, User } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import ProjectLayout from "@/components/layout/ProjectLayout";
 import { useRouter } from "next/router";
@@ -13,7 +13,7 @@ export default function ProjectDashboard(props) {
     bots: 0,
     humans: 0,
   });
-  const [isDataLoading, setIsDataLoading] = useState(true);
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   const fetchContentEntries = async () => {
     setIsDataLoading(true);
@@ -25,7 +25,9 @@ export default function ProjectDashboard(props) {
     });
     const appContent = await response.json();
 
-    setAppContent(appContent);
+    if (response.ok) {
+      setAppContent(appContent);
+    }
     setIsDataLoading(false);
   };
 
@@ -42,7 +44,7 @@ export default function ProjectDashboard(props) {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total File</CardTitle>
-              <DollarSign className="h-4 w-4 text-muted-foreground" />
+              <File className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{appContent?.files}</div>
@@ -54,7 +56,7 @@ export default function ProjectDashboard(props) {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Total URL</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <Link className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{appContent?.urls}</div>
@@ -65,7 +67,7 @@ export default function ProjectDashboard(props) {
               <CardTitle className="text-sm font-medium">
                 Total Conversation Human
               </CardTitle>
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
+              <User className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{appContent?.humans}</div>
@@ -76,7 +78,7 @@ export default function ProjectDashboard(props) {
               <CardTitle className="text-sm font-medium">
                 Total Conversation Bot
               </CardTitle>
-              <CreditCard className="h-4 w-4 text-muted-foreground" />
+              <BotIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{appContent?.bots}</div>

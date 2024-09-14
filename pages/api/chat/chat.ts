@@ -1,7 +1,8 @@
 import { Pinecone } from "@pinecone-database/pinecone";
 // import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 // import { PineconeStore } from "langchain/vectorstores/pinecone";
-import { AIMessage, HumanMessage } from "langchain/schema";
+// import { AIMessage, HumanMessage } from "langchain/schema";
+import { AIMessage, HumanMessage } from "@langchain/core/messages";
 import makeChain from "@/lib/makeChain";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { PineconeStore } from "@langchain/pinecone";
@@ -31,7 +32,7 @@ export default async (req, res) => {
 
     /* create vectorstore */
     const vectorStore = await PineconeStore.fromExistingIndex(
-      new OpenAIEmbeddings({}),
+      new OpenAIEmbeddings(),
       {
         pineconeIndex: index,
         textKey: "text",
@@ -54,14 +55,15 @@ export default async (req, res) => {
     });
 
     // Ask a question using chat history
-    const response = await chain.call({
+    const response = await chain.invoke({
+      context: await vectorStore.asRetriever().invoke(sanitizedQuestion),
       question: sanitizedQuestion,
       chat_history: pastMessages.filter(function (element) {
         return element !== undefined;
       }),
     });
 
-    res.status(200).json(response);
+    res.status(200).json({ text: response });
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: error.message || "Something went wrong" });

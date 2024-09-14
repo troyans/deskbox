@@ -16,7 +16,6 @@ export default function Dashboard(props) {
 
   const [activeTab, setActiveTab] = useState("feed");
   const [reload, setReload] = useState(false);
-  const [statusMsg, setStatusMsg] = useState("");
   const [isDataLoading, setIsDataLoading] = useState(true);
   const [appContent, setAppContent] = useState([]);
 
@@ -32,7 +31,9 @@ export default function Dashboard(props) {
       });
       const appContent = await response.json();
 
-      setAppContent(appContent);
+      if (response.ok) {
+        setAppContent(appContent);
+      }
       setIsDataLoading(false);
     };
 

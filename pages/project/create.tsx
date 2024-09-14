@@ -32,7 +32,9 @@ export default function ProjectCreate(props) {
   const [color, setColor] = useState("#5423E7");
   const [txtColor, setTxtColor] = useState("#FFF");
   const [icon, setIcon] = useState("");
+  const [intercom, setIntercom] = useState("");
   const [files, setFiles] = useState([]);
+  const [url, setUrl] = useState("");
 
   const handleFileChange = async (data: any) => {
     const uploadId = uuidv4();
@@ -75,13 +77,15 @@ export default function ProjectCreate(props) {
       });
 
       fileInputRef.current.value = "";
-      router.push(`/project/${data.id}/inbox`);
-      setIsDataLoading(false);
-      toast({
-        variant: "success",
-        title: "Yeay! Update success.",
-        description: "Success! Update project successfully.",
-      });
+      if (!url) {
+        router.push(`/project/${data.id}/inbox`);
+        setIsDataLoading(false);
+        toast({
+          variant: "success",
+          title: "Yeay! Update success.",
+          description: "Success! Update project successfully.",
+        });
+      }
     } catch (error) {
       toast({
         variant: "destructive",
@@ -108,6 +112,43 @@ export default function ProjectCreate(props) {
     }
   }
 
+  const crawPage = async (data) => {
+    try {
+      const response = await fetch(`/api/projects/${data.id}/links/create`, {
+        method: "POST",
+        body: JSON.stringify({ url: await url }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const res = await response.json();
+
+      if (response.ok) {
+        router.push(`/project/${data.id}/inbox`);
+        toast({
+          variant: "success",
+          title: "Yeay! Update success.",
+          description: "Success! Update project successfully.",
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description:
+            "The content on your URL is too long. Please select another URL",
+        });
+      }
+      setIsDataLoading(false);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "Failed! Check you input and try again.",
+      });
+      console.error("Error uploading files:", error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     setIsDataLoading(true);
     e.preventDefault();
@@ -116,7 +157,7 @@ export default function ProjectCreate(props) {
       tooltip,
       welcome,
       placeholder,
-      setting: JSON.stringify({ color, txtColor, icon }),
+      setting: JSON.stringify({ color, txtColor, icon, intercom }),
     };
 
     // Make call to backend to create user
@@ -131,8 +172,21 @@ export default function ProjectCreate(props) {
 
     if (res.ok) {
       const data = await res.json();
-      handleFileChange(data);
-      // router.push(`/project/${data.id}/inbox`);
+      if (files.length !== 0) {
+        await handleFileChange(data);
+      }
+      if (url) {
+        await crawPage(data);
+      }
+      if (!url && files.length === 0) {
+        router.push(`/project/${data.id}/inbox`);
+        setIsDataLoading(false);
+        toast({
+          variant: "success",
+          title: "Yeay! Update success.",
+          description: "Success! Update project successfully.",
+        });
+      }
     } else {
       toast({
         variant: "destructive",
@@ -196,7 +250,7 @@ export default function ProjectCreate(props) {
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Name"
+                    placeholder="Input Name"
                     onChange={(e) => setTitle(e.target.value)}
                     required
                   />
@@ -206,7 +260,7 @@ export default function ProjectCreate(props) {
                   <Input
                     id="tooltip"
                     type="text"
-                    placeholder="Tooltip"
+                    placeholder="Input Tooltip"
                     onChange={(e) => setTooltip(e.target.value)}
                   />
                 </div>
@@ -215,7 +269,7 @@ export default function ProjectCreate(props) {
                   <Input
                     id="welcome"
                     type="text"
-                    placeholder="Welcome"
+                    placeholder="Input Welcome"
                     onChange={(e) => setWelcome(e.target.value)}
                   />
                 </div>
@@ -224,7 +278,7 @@ export default function ProjectCreate(props) {
                   <Input
                     id="placeholder"
                     type="text"
-                    placeholder="Placeholder"
+                    placeholder="Input Placeholder"
                     onChange={(e) => setPlaceholder(e.target.value)}
                   />
                 </div>
@@ -262,6 +316,15 @@ export default function ProjectCreate(props) {
                   />
                 </div>
                 <div className="grid gap-3">
+                  <Label htmlFor="intercom">Intercom Workspace ID</Label>
+                  <Input
+                    id="intercom"
+                    type="text"
+                    placeholder="Input Intercom Workspace ID"
+                    onChange={(e) => setIntercom(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-3">
                   <Label htmlFor="color">Upload File</Label>
                   <Input
                     type="file"
@@ -269,6 +332,15 @@ export default function ProjectCreate(props) {
                     name="file"
                     ref={fileInputRef}
                     onChange={(e) => setFiles(Array.from(e.target.files))}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <Label htmlFor="url">URL</Label>
+                  <Input
+                    id="url"
+                    type="text"
+                    placeholder="Input Spesific URL"
+                    onChange={(e) => setUrl(e.target.value)}
                   />
                 </div>
                 <Button

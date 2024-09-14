@@ -1,8 +1,10 @@
 import prisma from "@/lib/prismaClient";
+import { checkAuth } from "@/lib/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
+    await checkAuth(req, res);
     try {
       const conversations = await prisma.conversations.findMany({
         where: {
@@ -10,6 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             ? req.query.id[0]
             : req.query.id,
         },
+        orderBy: [{ createdAt: "desc" }],
       });
 
       res.status(200).json(conversations);

@@ -6,11 +6,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/Avatar";
 import { Switch } from "../ui/Switch";
 import { cn } from "@/lib/utils";
 
-export default function ConversationDetail({ id, appearance, refetch }: any) {
+export default function ConversationDetail({
+  id,
+  appearance,
+  beforeLoad,
+  intervalId,
+  refetch,
+  setBeforeLoad,
+}: any) {
   const router = useRouter();
   const chatHistoryRef = React.useRef(null);
   const containerRef = React.useRef(null);
-  const intervalId = React.useRef(null);
 
   const [isDataLoading, setIsDataLoading] = React.useState(true);
   const [admin, setAdmin] = React.useState(false);
@@ -43,7 +49,7 @@ export default function ConversationDetail({ id, appearance, refetch }: any) {
     if (element) {
       element.scrollTop = element.scrollHeight;
     }
-  }, [chatHistory]);
+  }, [beforeLoad !== chatHistory.length]);
 
   const fetchContentEntries = async () => {
     setIsDataLoading(true);
@@ -57,8 +63,11 @@ export default function ConversationDetail({ id, appearance, refetch }: any) {
       }
     );
     const appContent = await response.json();
+    if (beforeLoad !== appContent.length) {
+      setChatHistory(appContent);
+      setBeforeLoad(appContent.length);
+    }
 
-    setChatHistory(appContent);
     setIsDataLoading(false);
   };
 
@@ -137,7 +146,7 @@ export default function ConversationDetail({ id, appearance, refetch }: any) {
             className="chat-history flex-grow flex flex-col h-full absolute w-full"
           >
             {id && (
-              <div className="flex items-center space-x-2 border-b mb-4 pb-4  ">
+              <div className="flex items-center space-x-2 border-b mb-4 pb-4 hidden">
                 <Switch
                   id="airplane-mode"
                   className="data-[state=unchecked]:bg-gray-200"
@@ -147,14 +156,14 @@ export default function ConversationDetail({ id, appearance, refetch }: any) {
                 <Label htmlFor="airplane-mode">Handover Admin</Label>
               </div>
             )}
-            <div className="overflow-y-auto" ref={containerRef}>
+            <div className="overflow-y-auto text-sm" ref={containerRef}>
               {chatHistory.map((message, index) => (
                 <div key={index}>
                   {(message.speaker === "AI" ||
                     message.speaker === "ADMIN") && (
-                    <div className="mb-2 text-right">
+                    <div className="mb-2 flex">
                       <div
-                        className="bg-blue-500 text-white rounded-lg py-2 px-4 inline-block"
+                        className="bg-blue-500 text-white rounded-lg py-4 px-4 inline-block [&>p]:mb-3 [&>ul]:ml-5 [&>ul]:mb-3 [&>ul]:list-[inherit] max-w-[70%] ml-auto"
                         style={{
                           background: appearance.setting.color,
                           color: appearance.setting.txtColor,
@@ -178,7 +187,7 @@ export default function ConversationDetail({ id, appearance, refetch }: any) {
                         </AvatarFallback>
                       </Avatar>
                       <div
-                        className="bg-gray-200 text-gray-700 rounded-lg py-2 px-4 inline-block"
+                        className="bg-gray-200 text-gray-700 rounded-lg py-4 px-4 inline-block max-w-[70%]"
                         dangerouslySetInnerHTML={{ __html: message.message }}
                       />
                     </div>

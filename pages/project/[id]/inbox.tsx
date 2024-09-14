@@ -11,44 +11,61 @@ import { useRouter } from "next/router";
 export default function ProjectInbox(props) {
   const router = useRouter();
 
+  const intervalId = React.useRef(null);
+
   const [id, setId] = React.useState("");
-  const [isDataLoading, setIsDataLoading] = React.useState(true);
+  const [isDataLoading, setIsDataLoading] = React.useState(false);
+  const [beforeLoad, setBeforeLoad] = React.useState(-1);
   const [appContent, setAppContent] = React.useState([]);
   const [appearance, setAppearance] = React.useState({});
 
   const fetchContentEntries = async () => {
     setIsDataLoading(true);
-    const response = await fetch(
-      `/api/projects/${router.query.id}/conversations`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const appContent = await response.json();
+    try {
+      const response = await fetch(
+        `/api/projects/${router.query.id}/conversations`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const appContent = await response.json();
 
-    setAppContent(appContent);
-    setIsDataLoading(false);
+      if (response.ok) {
+        setAppContent(appContent);
+      }
+      setIsDataLoading(false);
+    } catch (error) {
+      setIsDataLoading(false);
+      console.error("Network error:", error);
+    }
   };
 
   const fetchContentAppereance = async () => {
     setIsDataLoading(true);
-    const response = await fetch(`/api/projects/${router.query.id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const appContent = await response.json();
-    const tmpData = {
-      ...appContent,
-      setting: JSON.parse(appContent.setting),
-    };
+    try {
+      const response = await fetch(`/api/projects/${router.query.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const appContent = await response.json();
+      const tmpData = {
+        ...appContent,
+        setting: JSON.parse(appContent.setting),
+      };
 
-    setAppearance(tmpData);
-    setIsDataLoading(false);
+      if (response.ok) {
+        setAppearance(tmpData);
+      }
+      setIsDataLoading(false);
+    } catch (error) {
+      setIsDataLoading(false);
+      console.error("Network error:", error);
+    }
   };
 
   React.useEffect(() => {
@@ -80,7 +97,11 @@ export default function ProjectInbox(props) {
             <MailList
               items={appContent}
               id={id}
-              onClick={(value) => setId(value)}
+              onClick={(value) => {
+                setId(value);
+                setBeforeLoad(-1);
+                clearInterval(intervalId.current);
+              }}
             />
           </div>
         </div>
@@ -88,6 +109,9 @@ export default function ProjectInbox(props) {
           <ConversationDetail
             id={id}
             appearance={appearance}
+            beforeLoad={beforeLoad}
+            intervalId={intervalId}
+            setBeforeLoad={(val) => setBeforeLoad(val)}
             refetch={() => fetchContentEntries()}
           />
         </div>

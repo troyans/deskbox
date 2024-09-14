@@ -14,6 +14,7 @@ import { HexAlphaColorPicker, HexColorInput } from "react-colorful";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { LibraryBig, Palette, SquareTerminal } from "lucide-react";
+import SidebarChatbot from "@/components/sidebar/chatbot";
 
 export default function ProjectAppearance(props) {
   const router = useRouter();
@@ -34,6 +35,7 @@ export default function ProjectAppearance(props) {
   const [color, setColor] = useState("");
   const [txtColor, setTxtColor] = useState("");
   const [icon, setIcon] = useState("");
+  const [intercom, setIntercom] = useState("");
 
   const fetchContentEntries = async () => {
     setIsDataLoading(true);
@@ -45,14 +47,18 @@ export default function ProjectAppearance(props) {
     });
     const appContent = await response.json();
 
-    setAppContent(appContent);
-    setTitle(appContent.title);
-    setTooltip(appContent.tooltip);
-    setWelcome(appContent.welcome);
-    setPlaceholder(appContent.placeholder);
-    setColor(JSON.parse(appContent.setting)?.color || "#5423E7");
-    setTxtColor(JSON.parse(appContent.setting)?.txtColor || "#FFF");
-    setIcon(JSON.parse(appContent.setting)?.icon || "");
+    if (response.ok) {
+      setAppContent(appContent);
+      setTitle(appContent.title);
+      setTooltip(appContent.tooltip);
+      setWelcome(appContent.welcome);
+      setPlaceholder(appContent.placeholder);
+      setColor(JSON.parse(appContent.setting)?.color || "#5423E7");
+      setTxtColor(JSON.parse(appContent.setting)?.txtColor || "#FFF");
+      setIcon(JSON.parse(appContent.setting)?.icon || "");
+      setIntercom(JSON.parse(appContent.setting)?.intercom || "");
+    }
+
     setIsDataLoading(false);
   };
 
@@ -69,7 +75,7 @@ export default function ProjectAppearance(props) {
       tooltip,
       welcome,
       placeholder,
-      setting: JSON.stringify({ color, txtColor, icon }),
+      setting: JSON.stringify({ color, txtColor, icon, intercom }),
     };
 
     // Make call to backend to create user
@@ -136,51 +142,7 @@ export default function ProjectAppearance(props) {
     <>
       <ProjectLayout>
         <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          <div className="relative hidden flex-col items-start gap-4 md:flex">
-            <div className="flex items-center px-4 py-3">
-              <h1 className="text-xl font-bold">Chatbot</h1>
-            </div>
-            <div className="flex-1">
-              <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                <Link
-                  href={`/project/${router.query.id}/file`}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                    router.pathname === `/project/[id]/file`
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  <LibraryBig className="h-4 w-4" />
-                  Knowledge Base
-                </Link>
-                <Link
-                  href={`/project/${router.query.id}/appearance`}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                    router.pathname === `/project/[id]/appearance`
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  <Palette className="h-4 w-4" />
-                  Appearance
-                </Link>
-                <Link
-                  href={`/project/${router.query.id}/install`}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 transition-all hover:text-primary",
-                    router.pathname === `/project/[id]/install`
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  )}
-                >
-                  <SquareTerminal className="h-4 w-4" />
-                  Installation
-                </Link>
-              </nav>
-            </div>
-          </div>
+          <SidebarChatbot />
           <div className="relative flex h-full min-h-[50vh] flex-col bg-muted/50 pt-4 pl-4 lg:col-span-2 xl:col-span-4 border-l gap-6">
             <div className="flex w-full">
               <div className="flex flex-col flex-1 h-full gap-4">
@@ -199,7 +161,7 @@ export default function ProjectAppearance(props) {
                         id="name"
                         type="text"
                         value={title}
-                        placeholder="Name"
+                        placeholder="Input Name"
                         onChange={(e) => setTitle(e.target.value)}
                         required
                       />
@@ -210,7 +172,7 @@ export default function ProjectAppearance(props) {
                         id="tooltip"
                         type="text"
                         value={tooltip}
-                        placeholder="Tooltip"
+                        placeholder="Input Tooltip"
                         onChange={(e) => setTooltip(e.target.value)}
                       />
                     </div>
@@ -220,7 +182,7 @@ export default function ProjectAppearance(props) {
                         id="welcome"
                         type="text"
                         value={welcome}
-                        placeholder="Welcome"
+                        placeholder="Input Welcome"
                         onChange={(e) => setWelcome(e.target.value)}
                       />
                     </div>
@@ -230,7 +192,7 @@ export default function ProjectAppearance(props) {
                         id="placeholder"
                         type="text"
                         value={placeholder}
-                        placeholder="Placeholder"
+                        placeholder="Input Placeholder"
                         onChange={(e) => setPlaceholder(e.target.value)}
                       />
                     </div>
@@ -265,6 +227,16 @@ export default function ProjectAppearance(props) {
                         onChange={async (
                           e: React.ChangeEvent<HTMLInputElement>
                         ) => uploadFile(e)}
+                      />
+                    </div>
+                    <div className="grid gap-3">
+                      <Label htmlFor="intercom">Intercom Workspace ID</Label>
+                      <Input
+                        id="intercom"
+                        type="text"
+                        value={intercom}
+                        placeholder="Input Intercom Workspace ID"
+                        onChange={(e) => setIntercom(e.target.value)}
                       />
                     </div>
                   </div>

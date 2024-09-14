@@ -1,9 +1,11 @@
 import prisma from "@/lib/prismaClient";
+import { checkAuth } from "@/lib/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "GET") {
+    await checkAuth(req, res);
     try {
       const token = await getToken({
         req: req,

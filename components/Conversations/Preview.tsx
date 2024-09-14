@@ -27,7 +27,6 @@ export default function ConversationPreview({ project, className }: any) {
   }, [chatHistory]);
 
   const fetchContentEntries = async () => {
-    // setIsDataLoading(true);
     const response = await fetch(
       `/api/projects/${
         router.query.id
@@ -42,7 +41,6 @@ export default function ConversationPreview({ project, className }: any) {
     const appContent = await response.json();
 
     setChatHistory(appContent);
-    // setIsDataLoading(false);
   };
 
   const chatNow = async (query) => {
@@ -153,7 +151,6 @@ export default function ConversationPreview({ project, className }: any) {
 
   return (
     <>
-      {/* <div className="relative flex h-full min-h-[50vh] flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2 border"> */}
       <div
         className={cn(
           "relative flex h-full flex-col rounded-xl bg-muted/50 p-4 lg:col-span-2 border",
@@ -221,9 +218,9 @@ export default function ConversationPreview({ project, className }: any) {
                     stroke="currentColor"
                   >
                     <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M6 18L18 6M6 6l12 12"
                     ></path>
                   </svg>
@@ -300,48 +297,6 @@ export default function ConversationPreview({ project, className }: any) {
             </div>
           </div>
         </div>
-
-        {/* <div className="flex-1">
-          <div
-            ref={chatHistoryRef}
-            className="chat-history mt-4 overflow-y-auto flex-grow flex flex-col h-[55vh]"
-          >
-            {chatHistory.map((message, index) => (
-              <div
-                key={index}
-                className={`text-sm py-2 px-4 rounded-md mb-2 mr-4 ${
-                  message.speaker === "USER"
-                    ? "bg-gray-200 self-end"
-                    : "bg-blue-500 text-white"
-                }`}
-                dangerouslySetInnerHTML={{ __html: message.message }}
-              ></div>
-            ))}
-          </div>
-        </div>
-        <form className="relative overflow-hidden rounded-lg border bg-background focus-within:ring-1 focus-within:ring-ring">
-          <Label htmlFor="message" className="sr-only">
-            Message
-          </Label>
-          <Textarea
-            id="message"
-            placeholder="Type your message here..."
-            className="min-h-12 resize-none border-0 p-3 shadow-none focus-visible:ring-0"
-            onChange={(e) => setQuery(e.target.value)}
-            value={query}
-          />
-          <div className="flex items-center p-3 pt-0">
-            <Button
-              type="button"
-              size="sm"
-              className="ml-auto gap-1.5"
-              onClick={() => chatNow(query)}
-            >
-              Send Message
-              <CornerDownLeft className="size-3.5" />
-            </Button>
-          </div>
-        </form> */}
       </div>
     </>
   );

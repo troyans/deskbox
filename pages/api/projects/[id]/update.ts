@@ -1,8 +1,10 @@
 import prisma from "@/lib/prismaClient";
+import { checkAuth } from "@/lib/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "PUT") {
+    await checkAuth(req, res);
     try {
       const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
 

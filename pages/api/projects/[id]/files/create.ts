@@ -1,8 +1,10 @@
 import prisma from "@/lib/prismaClient";
+import { checkAuth } from "@/lib/utils";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method == "POST") {
+    await checkAuth(req, res);
     try {
       const data = {
         ...req.body,

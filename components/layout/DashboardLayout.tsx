@@ -30,29 +30,17 @@ const DashboardLayout = ({ children }) => {
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link
             href="#"
-            className="flex items-center gap-2 text-lg font-semibold md:text-base"
+            className="flex items-center gap-2 text-lg font-semibold md:text-base w-max"
           >
-            <Package2 className="h-6 w-6" />
-            <span className="sr-only">Chatver</span>
+            <img src="/logo.svg" alt="Deskbox" className="w-10 h-10" />
+            <span className="sr-only">Deskbox</span>
           </Link>
           <Link
             href="#"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
-            Chatver
+            Deskbox
           </Link>
-          {/* <Link
-            href="/dashboard"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="#"
-            className="text-foreground transition-colors hover:text-foreground"
-          >
-            Changelog
-          </Link> */}
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -72,17 +60,8 @@ const DashboardLayout = ({ children }) => {
                 className="flex items-center gap-2 text-lg font-semibold"
               >
                 <Package2 className="h-6 w-6" />
-                <span className="sr-only">Chatver</span>
+                <span className="sr-only">Deskbox</span>
               </Link>
-              {/* <Link
-                href="#"
-                className="text-muted-foreground hover:text-foreground"
-              >
-                Dashboard
-              </Link>
-              <Link href="#" className="hover:text-foreground">
-                Changelog
-              </Link> */}
             </nav>
           </SheetContent>
         </Sheet>

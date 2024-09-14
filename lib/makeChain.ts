@@ -1,18 +1,21 @@
-//Langchain Library
+import { ChatOpenAI } from "@langchain/openai";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { StringOutputParser } from "@langchain/core/output_parsers";
+import {
+  RunnableSequence,
+  RunnablePassthrough,
+  RunnableLambda,
+} from "@langchain/core/runnables";
+import { formatDocumentsAsString } from "langchain/util/document";
 
-import { ChatOpenAI } from "langchain/chat_models/openai";
-import { ConversationalRetrievalQAChain } from "langchain/chains";
+const QA_TEMPLATE = `Context:
+You are a helpful AI assistant. You help your customer find information about the context in which you have already trained.
+You are very smart, and you know the meaning of the context despite the that sometimes customers have typos or different upper and lower case letters
 
-const CONDENSE_TEMPLATE = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
-
-Chat History:
-{chat_history}
-Follow Up Input: {question}
-Standalone question:`;
-
-const QA_TEMPLATE = `You are a helpful AI assistant. Use the following pieces of context to answer the question at the end.
-Format your answer in html format with paragraphs. Add blank new line appropriate.
-If you don't know the answer, just say you don't know. DO NOT try to make up an answer.
+Goal :
+I want you to use the following pieces of context to answer the question at the end. give a little bit of emotion when answering questions from customer
+Format your answer in HTML format with paragraphs and strong. Add a blank new line appropriately. Do not output markdown.
+If you don't know the answer, just say you don't know politely. DO NOT try to make up an answer.
 If the question is not related to the context, politely respond that you are tuned to only answer questions that are related to the context.
 
 {context}
@@ -23,17 +26,26 @@ Helpful answer in markdown:`;
 export default function makeChain(vectorstore: any) {
   const model = new ChatOpenAI({
     temperature: 0, // increase temepreature to get more creative answers
-    modelName: "gpt-3.5-turbo", //change this to gpt-4 if you have access
+    modelName: "gpt-4o-mini", //change this to gpt-4 if you have access
   });
-  const chain = ConversationalRetrievalQAChain.fromLLM(
-    model,
-    vectorstore.asRetriever(),
+
+  const prompt = ChatPromptTemplate.fromMessages([
+    ["system", QA_TEMPLATE],
+    ["human", "{question}"],
+  ]);
+
+  const retriever = vectorstore.asRetriever();
+
+  const chain = RunnableSequence.from([
+    RunnableLambda.from((input: any) => input.question),
     {
-      qaTemplate: QA_TEMPLATE,
-      questionGeneratorTemplate: CONDENSE_TEMPLATE,
-      returnSourceDocuments: true, //The number of source documents returned is 4 by default
-    }
-  );
+      context: retriever.pipe(formatDocumentsAsString),
+      question: new RunnablePassthrough(),
+    },
+    prompt,
+    model,
+    new StringOutputParser(),
+  ]);
 
   return chain;
 }

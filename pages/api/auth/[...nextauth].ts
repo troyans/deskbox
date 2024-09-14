@@ -44,7 +44,6 @@ export default NextAuth({
           },
         });
         const user = await res.json();
-        console.log("oi", user);
 
         if (res.ok && user) {
           userAccount = user;
