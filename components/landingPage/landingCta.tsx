@@ -11,17 +11,7 @@ export default function LandingCta() {
 
   const userEmail = session?.user?.email;
 
-  // List of free email providers
-  const freeEmailDomains = [
-    "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", 
-    "aol.com", "icloud.com", "mail.com", "zoho.com"
-  ];
-
-  // Function to validate email domain
-  const isFreeEmail = (email: string) => {
-    const emailDomain = email.split("@")[1];
-    return freeEmailDomains.includes(emailDomain);
-  };
+  // Removed the email validation logic
 
   const subscribeUser = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,11 +19,7 @@ export default function LandingCta() {
     const email = inputRef.current?.value;
     if (!email) return;
 
-    // Check if email domain is from a free provider
-    if (isFreeEmail(email)) {
-      setErrorMessage("Please use your company email address");
-      return; // Prevent form submission
-    }
+    // No need to check for free email or company email
 
     const formBody = `email=${encodeURIComponent(email)}`;
 
@@ -76,7 +62,7 @@ export default function LandingCta() {
                   name="email" 
                   required={true} 
                   ref={inputRef} 
-                  placeholder="you@yourcompany.com" 
+                  placeholder="you@example.com" 
                   className="block w-full px-6 py-4 text-white placeholder-gray-500 bg-black border border-transparent rounded-full sm:py-5 focus:border-transparent focus:ring-0" 
                 />
               </div>
@@ -89,13 +75,6 @@ export default function LandingCta() {
               </button>
             </div>
           </form>
-
-          {/* Show error message if the email is from a free provider */}
-          {errorMessage && (
-            <div className="text-center text-red-500 text-sm mt-2">
-              {errorMessage}
-            </div>
-          )}
 
           {/* Show response from the server */}
           {res && (
