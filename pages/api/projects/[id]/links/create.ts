@@ -1,3 +1,4 @@
+import prisma from "@/lib/prismaClient";
 import { NextApiRequest, NextApiResponse } from "next";
 import puppeteer from "puppeteer";
 import { Pinecone } from "@pinecone-database/pinecone";
