@@ -8,10 +8,14 @@ const AuthLayout = ({ children }) => {
 
   useEffect(() => {
     if (status === "authenticated") {
-      if (data.user.projects.length !== 0) {
-        router.push(`/project/${data.user.projects[0].id}/inbox`);
+      if (!data.user.isOnboard) {
+        router.push("/onboarding");
       } else {
-        router.push("/project/create");
+        if (data.user.projects.length !== 0) {
+          router.push(`/project/${data.user.projects[0].id}/inbox`);
+        } else {
+          router.push("/project/create");
+        }
       }
     }
   }, [status]);

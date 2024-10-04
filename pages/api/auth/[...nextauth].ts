@@ -4,6 +4,8 @@ import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/lib/prismaClient";
+import sendEmail from "@/lib/mailService";
+import { webRequest } from "@/lib/axios";
 
 let userAccount;
 export default NextAuth({
@@ -72,8 +74,10 @@ export default NextAuth({
   },
   callbacks: {
     async session({ session, token }) {
+      console.log(token);
       session.user.id = token.user.id;
-      session.user.projects = token.user.projects;
+      session.user.projects = token.user.projects || [];
+      session.user.isOnboard = token.user.isOnboard || false;
 
       return session;
     },
@@ -86,9 +90,29 @@ export default NextAuth({
         }
 
         token.user.id = user.id;
-        token.user.projects = user.projects;
+      }
+      if (token.user.id) {
+        const response = await fetch(
+          `${process.env.NEXTAUTH_URL}/api/user/${token.user.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const appContent = await response.json();
+        if (response.ok) {
+          token.user.isOnboard = appContent.isOnboard;
+          token.user.projects = appContent.projects;
+        }
       }
       return token;
+    },
+  },
+  events: {
+    createUser(message) {
+      sendEmail(message.user.email);
     },
   },
 });
