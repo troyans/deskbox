@@ -36,11 +36,12 @@ const LoginPage = (props) => {
     const session = await getSession();
 
     if (res?.ok) {
-      if (session.user.projects.length !== 0) {
-        router.push(`/project/${session.user.projects[0].id}/inbox`);
-      } else {
-        router.push("/project/create");
-      }
+      // if (session.user.projects.length !== 0) {
+      //   router.push(`/project/${session.user.projects[0].id}/inbox`);
+      // } else {
+      //   router.push("/project/create");
+      // }
+      router.push("/onboarding");
       return;
     } else {
       setIsLoading(false);
@@ -111,6 +112,12 @@ const LoginPage = (props) => {
                 </Button>
               </div>
             </form>
+            <Button
+              className="w-full text-white"
+              onClick={() => signIn("google")}
+            >
+              Sign in with Google
+            </Button>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link href="/register" className="underline text-primary">

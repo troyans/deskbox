@@ -3,6 +3,7 @@ import AuthLayout from "@/components/layout/AuthLayout";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -114,6 +115,12 @@ const Register = (props) => {
                 </Button>
               </div>
             </form>
+            <Button
+              className="w-full text-white"
+              onClick={() => signIn("google")}
+            >
+              Sign in with Google
+            </Button>
             <div className="mt-4 text-center text-sm">
               Already have an account?{" "}
               <Link href="/login" className="underline text-primary">

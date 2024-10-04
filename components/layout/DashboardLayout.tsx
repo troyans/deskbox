@@ -15,12 +15,15 @@ import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 const DashboardLayout = ({ children }) => {
-  const { status } = useSession();
+  const { status, data } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
+    }
+    if (status === "authenticated" && !data.user.isOnboard) {
+      router.push("/onboarding");
     }
   }, [status]);
 

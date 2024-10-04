@@ -16,12 +16,15 @@ import { cn } from "@/lib/utils";
 
 const ProjectLayout = ({ children }) => {
   const { query } = useRouter();
-  const { status } = useSession();
+  const { status, data } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
+    }
+    if (status === "authenticated" && !data.user.isOnboard) {
+      router.push("/onboarding");
     }
   }, [status]);
 

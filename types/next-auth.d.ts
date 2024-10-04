@@ -10,6 +10,7 @@ declare module "next-auth" {
   interface User {
     id: string;
     projects?: any;
+    isOnboard: boolean;
   }
 }
 
@@ -17,6 +18,7 @@ declare module "next-auth/jwt" {
   interface UserJwt {
     id: string;
     projects?: any;
+    isOnboard?: boolean;
   }
 
   interface JWT {

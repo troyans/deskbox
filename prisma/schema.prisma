@@ -49,6 +49,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   projects      Projects[]
+  onboardings   Onboardings[]
   notion_accounts NotionAccount[]
 }
 
@@ -150,4 +151,15 @@ model NotionAccount {
   email_notion   String? @db.Text
 
   user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Onboardings {
+  id            String    @id @default(cuid())
+  questions     String
+  answer        String
+  other         String?
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }

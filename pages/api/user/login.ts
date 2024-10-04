@@ -31,11 +31,16 @@ async function loginUserHandler(req, res) {
     const project = await prisma.projects.findMany({
       where: { userId: user.id },
     });
+    const onboarding = await prisma.onboardings.findMany({
+      where: { userId: user.id },
+    });
 
     if (user && user.password === hashPassword(password)) {
-      return res
-        .status(200)
-        .json({ ...exclude(user, ["password"]), projects: project });
+      return res.status(200).json({
+        ...exclude(user, ["password"]),
+        projects: project,
+        isOnboard: onboarding.length > 0 ? true : false,
+      });
     } else {
       return res.status(401).json({ message: "invalid credentials" });
     }
