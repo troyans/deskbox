@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 
 const withNextra = require("nextra")({
-  theme: "nextra-theme-blog",
-  themeConfig: "./theme.config.js",
+  theme: "./theme.tsx",
+  // theme: "nextra-theme-blog",
+  // themeConfig: "./theme.config.js",
 });
 
 const nextConfig = {
