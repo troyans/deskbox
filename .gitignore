@@ -12,6 +12,7 @@
 /.next/
 /out/
 /.vercel/
+/public/sitemap.xml
 
 # vscode
 /.vscode/
